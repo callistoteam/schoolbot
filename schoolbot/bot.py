@@ -1,8 +1,3 @@
-import os
-
-token = os.environ["TOKEN"]
-
-
 def load_cogs(bot):
     extensions = ["cogs.events"]
     failed_list = []
