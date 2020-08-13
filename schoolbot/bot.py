@@ -1,5 +1,5 @@
 def load_cogs(bot):
-    extensions = ["schoolbot.cogs.events"]
+    extensions = ["schoolbot.cogs.events", "schoolbot.cogs.school"]
     failed_list = []
 
     for extension in extensions:
