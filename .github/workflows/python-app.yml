@@ -35,7 +35,5 @@ jobs:
       run: |
         black . --check
     - name: Test with pytest
-      env:
-        ACCESS_TOKEN: None
       run: |
         pytest
