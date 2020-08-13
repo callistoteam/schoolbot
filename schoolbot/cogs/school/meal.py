@@ -16,7 +16,7 @@ class Meal(commands.Cog):
     @commands.command(name="급식")
     async def _meal(self, ctx, school_name: str, date: int = None):
         msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
-        neis = neispy.AsyncClient(os.environ["TOKEN"])
+        neis = neispy.AsyncClient(os.environ["API_KEY"])
         try:
             scinfo = await neis.schoolInfo(SCHUL_NM=school_name, rawdata=True)
         except Exception as e:
