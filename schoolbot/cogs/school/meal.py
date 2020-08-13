@@ -94,4 +94,3 @@ class Meal(commands.Cog):
                 description=meal,
             )
         )
-
