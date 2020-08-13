@@ -3,6 +3,7 @@ from discord.ext import commands
 
 import schoolbot
 
+
 class Ready(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
