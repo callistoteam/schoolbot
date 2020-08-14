@@ -7,7 +7,7 @@ on:
   push:
     branches: [ master, beta, stable ]
   pull_request:
-    branches: [ master, beta, stable ]
+    branches: [ master, staging, beta, stable ]
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
       run: |
         black . --check
     - name: Test with pytest
-      env:
-        ACCESS_TOKEN: None
+      env: 
+        API_KEY: None
       run: |
         pytest
