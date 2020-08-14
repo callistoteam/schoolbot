@@ -9,13 +9,13 @@ import discord
 from discord.ext import commands
 
 
-class Meal(commands.Cog):
+class AcademicCalendar(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
         self.neis = neispy.AsyncClient(apikey)
 
-    @commands.command(name="급식")
-    async def _meal(self, ctx, school_name: str = None, date: int = None):
+    @commands.command(name="학사일정")
+    async def _academic_calender(self, ctx, schoolname, date):
         msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
         if school_name:
             try:
@@ -77,29 +77,9 @@ class Meal(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="학교명을 입력해주세요")
             )  # 쿼리문 쓰고 지워도 되는거
-
+        
         try:
             if not date:
-                scmeal = await self.neis.mealServiceDietInfo(AE, SE)
+                pass
             else:
-                scmeal = await self.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
-        except Exception as e:
-            if isinstance(e, DataNotFound):
-                return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                )
-            else:
-                # str(uuid.uuid1())
-                # traceback.format_exc()
-                return await msg.edit(
-                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                )
-
-        meal_day = str(scmeal.MLSV_YMD)
-        meal = scmeal.DDISH_NM.replace("<br/>", "\n")
-        await msg.edit(
-            embed=discord.Embed(
-                title=f"{scmeal.SCHUL_NM}의 급식입니다.\n\n{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
-                description=meal,
-            )
-        )
+                pass
