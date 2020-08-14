@@ -35,5 +35,7 @@ jobs:
       run: |
         black . --check
     - name: Test with pytest
+      env: 
+        API_KEY: None
       run: |
         pytest
