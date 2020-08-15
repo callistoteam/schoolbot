@@ -1,7 +1,7 @@
 import os
 
 from .meal import Meal
-from .academic_calendar import AcademicSchedule
+from .academic_schedule import AcademicSchedule
 
 
 def setup(bot):
