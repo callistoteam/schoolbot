@@ -9,7 +9,7 @@ import discord
 from discord.ext import commands
 
 
-class AcademicCalendar(commands.Cog):
+class AcademicSchedule(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
         self.neis = neispy.AsyncClient(apikey)
