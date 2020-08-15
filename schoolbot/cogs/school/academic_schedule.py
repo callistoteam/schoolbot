@@ -48,7 +48,7 @@ class AcademicSchedule(commands.Cog):
 
                 try:
                     response = await self.bot.wait_for(
-                        "message", check=lambda m: m.author == ctx.author, timeout=30
+                        "message", check=lambda m: m.author == ctx.author and m.channel == ctx.channel, timeout=30
                     )
                 except asyncio.TimeoutError:
                     return await msg.edit(
