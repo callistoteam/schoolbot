@@ -15,11 +15,11 @@ class AcademicCalendar(commands.Cog):
         self.neis = neispy.AsyncClient(apikey)
 
     @commands.command(name="학사일정")
-    async def _academic_calender(self, ctx, schoolname, date):
+    async def _academic_calender(self, ctx, schoolname: str = None, date: int = None):
         msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
-        if school_name:
+        if schoolname:
             try:
-                scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name, rawdata=True)
+                scinfo = await self.neis.schoolInfo(SCHUL_NM=schoolname, rawdata=True)
             except Exception as e:
                 if isinstance(e, DataNotFound):
                     return await msg.edit(
@@ -80,6 +80,26 @@ class AcademicCalendar(commands.Cog):
         
         try:
             if not date:
-                pass
+                scacca = await self.neis.SchoolSchedule(AE, SE)
             else:
-                pass
+                scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
+        except Exception as e:
+            if isinstance(e, DataNotFound):
+                return await msg.edit(
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                )
+            else:
+                # str(uuid.uuid1())
+                # traceback.format_exc()
+                return await msg.edit(
+                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
+                )
+        
+        acca_day = scacca.AA_YMD
+        await msg.edit(
+            embed=discord.Embed(
+                title=f"{scacca.SCHUL_NM}의 학사일정입니다.\n\n{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
+                description=f"**{scacca.EVENT_NM}**\n{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+            )
+        )
+
