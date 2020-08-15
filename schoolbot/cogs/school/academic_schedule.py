@@ -15,7 +15,7 @@ class AcademicSchedule(commands.Cog):
         self.neis = neispy.AsyncClient(apikey)
 
     @commands.command(name="학사일정")
-    async def _academic_calender(self, ctx, schoolname: str = None, date: int = None):
+    async def _academic_schedule(self, ctx, schoolname: str = None, date: int = None):
         msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
         if schoolname:
             try:
