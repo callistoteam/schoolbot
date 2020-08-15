@@ -77,7 +77,7 @@ class AcademicSchedule(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="학교명을 입력해주세요")
             )  # 쿼리문 쓰고 지워도 되는거
-        
+
         try:
             if not date:
                 scacca = await self.neis.SchoolSchedule(AE, SE)
@@ -94,7 +94,7 @@ class AcademicSchedule(commands.Cog):
                 return await msg.edit(
                     embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                 )
-        
+
         acca_day = scacca.AA_YMD
         await msg.edit(
             embed=discord.Embed(
