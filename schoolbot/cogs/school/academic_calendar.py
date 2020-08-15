@@ -9,17 +9,17 @@ import discord
 from discord.ext import commands
 
 
-class Meal(commands.Cog):
+class AcademicCalendar(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
         self.neis = neispy.AsyncClient(apikey)
 
-    @commands.command(name="급식")
-    async def _meal(self, ctx, school_name: str = None, date: int = None):
+    @commands.command(name="학사일정")
+    async def _academic_calender(self, ctx, schoolname: str = None, date: int = None):
         msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
-        if school_name:
+        if schoolname:
             try:
-                scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name, rawdata=True)
+                scinfo = await self.neis.schoolInfo(SCHUL_NM=schoolname, rawdata=True)
             except Exception as e:
                 if isinstance(e, DataNotFound):
                     return await msg.edit(
@@ -77,12 +77,12 @@ class Meal(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="학교명을 입력해주세요")
             )  # 쿼리문 쓰고 지워도 되는거
-
+        
         try:
             if not date:
-                scmeal = await self.neis.mealServiceDietInfo(AE, SE)
+                scacca = await self.neis.SchoolSchedule(AE, SE)
             else:
-                scmeal = await self.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
+                scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
         except Exception as e:
             if isinstance(e, DataNotFound):
                 return await msg.edit(
@@ -94,12 +94,12 @@ class Meal(commands.Cog):
                 return await msg.edit(
                     embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                 )
-
-        meal_day = str(scmeal.MLSV_YMD)
-        meal = scmeal.DDISH_NM.replace("<br/>", "\n")
+        
+        acca_day = scacca.AA_YMD
         await msg.edit(
             embed=discord.Embed(
-                title=f"{scmeal.SCHUL_NM}의 급식입니다.\n\n{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
-                description=meal,
+                title=f"{scacca.SCHUL_NM}의 학사일정입니다.\n\n{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
+                description=f"**{scacca.EVENT_NM}**\n{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
             )
         )
+
