@@ -102,4 +102,3 @@ class AcademicSchedule(commands.Cog):
                 description=f"**{scacca.EVENT_NM}**\n{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
             )
         )
-
