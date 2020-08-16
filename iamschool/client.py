@@ -38,4 +38,3 @@ class AsyncClient:
         )
 
         return [Article(article) for article in articles["articles"]]
-

@@ -6,4 +6,3 @@ class SchoolType(Enum):
     middle = "MIDDLE_SCHOOL"
     high = "HIGH_SCHOOL"
     kindergarten = "KINDERGARDEN"
-
