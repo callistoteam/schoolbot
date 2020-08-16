@@ -35,14 +35,14 @@ class Article(commands.Cog):
             else:
                 if scinfo == []:
                     return await msg.edit(
-                        embed=discord.Embed(title="아이엠스쿨에 등록되지 않았습니다. 확인하신후 다시 요청하세요", description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ")
+                        embed=discord.Embed(
+                            title="아이엠스쿨에 등록되지 않았습니다. 확인하신후 다시 요청하세요",
+                            description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ",
+                        )
                     )
                 else:
-                    
                     if len(scinfo) > 1:
-                        school_name_list = [
-                            school_name.name for school_name in scinfo
-                        ]
+                        school_name_list = [school_name.name for school_name in scinfo]
                         school_name_list_with_num = [
                             str(index) + ". " + school_names
                             for index, school_names in enumerate(school_name_list, 1)
@@ -58,7 +58,7 @@ class Article(commands.Cog):
                                 "message",
                                 check=lambda m: m.author == ctx.author
                                 and m.channel == ctx.channel,
-                                timeout=30
+                                timeout=30,
                             )
                         except asyncio.TimeoutError:
                             return await msg.edit(
@@ -69,17 +69,16 @@ class Article(commands.Cog):
                                 num = int(response.content) - 1
                             except ValueError:
                                 return await msg.edit(
-                                    embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.")
+                                    embed=discord.Embed(
+                                        title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요."
+                                    )
                                 )
                             else:
                                 choice = scinfo[num]
                     else:
                         choice = scinfo[0]
         else:
-            return await msg.edit(
-                embed=discord.Embed(title="학교명을 입력해주세요")
-            )
-
+            return await msg.edit(embed=discord.Embed(title="학교명을 입력해주세요"))
         try:
             scarticles = await self.client.fetch_recent_article(choice.id)
         except Exception as e:
@@ -96,18 +95,29 @@ class Article(commands.Cog):
         else:
             if scarticles == []:
                 return await msg.edit(
-                    embed=discord.Embed(title="아이엠스쿨에 게시된 게시물이 없습니다.", description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ")
+                    embed=discord.Embed(
+                        title="아이엠스쿨에 게시된 게시물이 없습니다.",
+                        description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ",
+                    )
                 )
             else:
                 position = 0
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title=scarticles[position].title,
                     description=scarticles[position].content,
-                    timestamp=datetime.datetime.strptime(scarticles[position].date, "%Y.%m.%d"),
-                    url=scarticles[position].link
+                    timestamp=datetime.datetime.strptime(
+                        scarticles[position].date, "%Y.%m.%d"
+                    ),
+                    url=scarticles[position].link,
                 )
-                embed.set_author(name=scarticles[position].organization_name, url=f"https://school.iamservice.net/organization/{scarticles[position].organization_id}", icon_url=scarticles[position].organization_logo)
-                embed.set_footer(text=f"#{scarticles[position].group.name} • {scarticles[position].author}")
+                embed.set_author(
+                    name=scarticles[position].organization_name,
+                    url=f"https://school.iamservice.net/organization/{scarticles[position].organization_id}",
+                    icon_url=scarticles[position].organization_logo,
+                )
+                embed.set_footer(
+                    text=f"#{scarticles[position].group.name} • {scarticles[position].author}"
+                )
                 if scarticles[position].images:
                     embed.set_image(url=scarticles[position].images[0])
                 await msg.edit(embed=embed)
@@ -120,8 +130,8 @@ class Article(commands.Cog):
                             "reaction_add",
                             check=lambda reaction, user: user == ctx.author
                             and reaction.message.id == msg.id
-                            and reaction.emoji in ["◀","⏹","▶"],
-                            timeout=30
+                            and reaction.emoji in ["◀", "⏹", "▶"],
+                            timeout=30,
                         )
                     except asyncio.TimeoutError:
                         await msg.clear_reactions()
@@ -132,7 +142,7 @@ class Article(commands.Cog):
                         elif reaction.emoji == "⏹":
                             try:
                                 await msg.clear_reactions()
-                            except:
+                            except Exception:
                                 pass
                             break
                         else:
@@ -141,21 +151,27 @@ class Article(commands.Cog):
                             position = len(scarticles) - 1
                         if position >= len(scarticles):
                             position = 0
-                        embed=discord.Embed(
+                        embed = discord.Embed(
                             title=scarticles[position].title,
                             description=scarticles[position].content,
-                            timestamp=datetime.datetime.strptime(scarticles[position].date, "%Y.%m.%d"),
-                            url=scarticles[position].link
+                            timestamp=datetime.datetime.strptime(
+                                scarticles[position].date, "%Y.%m.%d"
+                            ),
+                            url=scarticles[position].link,
                         )
-                        embed.set_author(name=scarticles[position].organization_name, url=f"https://school.iamservice.net/organization/{scarticles[position].organization_id}", icon_url=scarticles[position].organization_logo)
-                        embed.set_footer(text=f"#{scarticles[position].group.name} • {scarticles[position].author}")
+                        embed.set_author(
+                            name=scarticles[position].organization_name,
+                            url=f"https://school.iamservice.net/organization/{scarticles[position].organization_id}",
+                            icon_url=scarticles[position].organization_logo,
+                        )
+                        embed.set_footer(
+                            text=f"#{scarticles[position].group.name} • {scarticles[position].author}"
+                        )
                         if scarticles[position].images:
                             embed.set_image(url=scarticles[position].images[0])
                         await msg.edit(embed=embed)
                         try:
                             await msg.remove_reaction(reaction.emoji, user)
-                        except:
+                        except Exception:
                             pass
                 return
-                
-                
