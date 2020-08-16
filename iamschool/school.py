@@ -1,20 +1,10 @@
 from .enums import SchoolType
 
-class School():
-    def __init__(self, data):
-        self.id = None
-        self.name = None
-        self.type = None
-        self.address = None
 
-        if 'name' in data:
-            self.name = data['name']
+class School:
+    def __init__(self, data: dict):
+        self.id = data.get("instituteNo")
+        self.name = data.get("name")
+        self.type = SchoolType(data["type"]) if "type" in data else None
+        self.address = data.get("address")
 
-        if 'instituteNo' in data:
-            self.id = data['instituteNo']
-
-        if 'type' in data:
-            self.type = SchoolType(data['type'])
-
-        if 'address' in data:
-            self.address = data['address']

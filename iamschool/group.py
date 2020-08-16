@@ -1,10 +1,5 @@
-class Group():
-    def __init__(self, data):
-        self.id = None
-        self.name = None
+class Group:
+    def __init__(self, data: dict):
+        self.id = data.get("id")
+        self.name = data.get("name")
 
-        if 'name' in data:
-            self.name = data['name']
-
-        if 'id' in data:
-            self.id = data['id']
