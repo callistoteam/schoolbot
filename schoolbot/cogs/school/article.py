@@ -11,7 +11,7 @@ from discord.ext import commands
 
 
 class Article(commands.Cog):
-    def __init__(self, bot, apikey):
+    def __init__(self, bot):
         self.bot = bot
         self.client = iamschool.AsyncClient()
 
