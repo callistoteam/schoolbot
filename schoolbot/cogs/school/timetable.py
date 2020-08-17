@@ -101,7 +101,7 @@ class TimeTable(commands.Cog):
             scclass = "mis"
         elif "고등학교" in SN:
             return await msg.edit(
-                embed=discord.Embed(title="죄송합니다. 현재 고등학교는 지원하지않습니다.") # 고등학교 지원할때 빼면됨
+                embed=discord.Embed(title="죄송합니다. 현재 고등학교는 지원하지않습니다.")  # 고등학교 지원할때 빼면됨
             )
 
         try:
@@ -130,6 +130,6 @@ class TimeTable(commands.Cog):
         await msg.edit(
             embed=discord.Embed(
                 title=f"{tt_scname}의 {tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일 시간표입니다.",
-                description="\n".join([i['ITRT_CNTNT'] for i in sctimetable.data]),
+                description="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
             )
         )
