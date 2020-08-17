@@ -1,1 +1,1 @@
-worker: chmod a+x ./run.sh
+worker: bash ./run.sh
