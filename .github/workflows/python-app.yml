@@ -30,7 +30,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         secrets_token: ${{ secrets.SECRET_TOKEN }}
       run: |
-        pip install git+https://${{ secrets.USERNAME }}:${{ secrets.SECRET_TOKEN }}@github.com/callistoteam/iamschool.git"
+        pip install git+https://${{ secrets.USERNAME }}:${{ secrets.SECRET_TOKEN }}@github.com/callistoteam/iamschool.git
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
