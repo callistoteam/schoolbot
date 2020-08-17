@@ -121,6 +121,10 @@ class TimeTable(commands.Cog):
                     CLASS_NM=class_nm,
                 )
         except Exception as e:
+            if isinstance(e, DataNotFound):
+                return await msg.edit(
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                )
             return await msg.edit(
                 embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
             )
