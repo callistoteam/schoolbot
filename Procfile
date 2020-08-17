@@ -1,1 +1,1 @@
-worker: python -m schoolbot
+worker: run.sh
