@@ -2,6 +2,12 @@ import discord
 from discord.ext import commands
 
 import schoolbot
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from utils import db
 
 
 class Ready(commands.Cog):
@@ -10,6 +16,8 @@ class Ready(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+
+        db.pool = await db.connect_db()
 
         print("Login.. : ")
         print(self.bot.user.name)

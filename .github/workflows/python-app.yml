@@ -43,5 +43,9 @@ jobs:
     - name: Test with pytest
       env: 
         API_KEY: None
+        DB_HOST: None
+        DB_PW: None
+        DB_UNAME: None
+        DB_DBNAME: None
       run: |
         pytest
