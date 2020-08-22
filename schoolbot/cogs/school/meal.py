@@ -49,7 +49,7 @@ class Meal(commands.Cog):
                     )
                 else:
                     if response.content.isdigit():
-                        num = response.content - 1
+                        num = int(response.content) - 1
                     else:
                         return await msg.edit(
                             embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.")
