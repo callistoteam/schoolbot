@@ -1,9 +1,6 @@
 import asyncio
 import datetime
 
-# import traceback
-# import uuid
-
 import iamschool
 from iamschool import HTTPException
 import discord
