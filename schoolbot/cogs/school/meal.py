@@ -1,8 +1,5 @@
 import asyncio
 
-# import traceback
-# import uuid
-
 import neispy
 from neispy import DataNotFound
 import discord

@@ -21,17 +21,10 @@ class Article(commands.Cog):
         if school_name:
             try:
                 scinfo = await self.client.search_school(school_name)
-            except Exception as e:
-                if isinstance(e, HTTPException):
-                    return await msg.edit(
-                        embed=discord.Embed(title="HTTP 요청 오류입니다", description=f"{e}")
-                    )
-                else:
-                    # str(uuid.uuid1())
-                    # traceback.format_exc()
-                    return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                    )
+            except HTTPException as e:
+                return await msg.edit(
+                    embed=discord.Embed(title="HTTP 요청 오류입니다", description=f"{e}")
+                )
             else:
                 if not scinfo:
                     return await msg.edit(

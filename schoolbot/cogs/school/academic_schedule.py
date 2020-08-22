@@ -17,15 +17,10 @@ class AcademicSchedule(commands.Cog):
         if schoolname:
             try:
                 scinfo = await self.neis.schoolInfo(SCHUL_NM=schoolname, rawdata=True)
-            except Exception as e:
-                if isinstance(e, DataNotFound):
-                    return await msg.edit(
-                        embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                    )
-                else:
-                    return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                    )
+            except DataNotFound:
+                return await msg.edit(
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                )
             if scinfo.data:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
