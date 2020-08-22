@@ -84,4 +84,3 @@ class Meal(commands.Cog):
                 description=scmeal.DDISH_NM.replace("<br/>", "\n"),
             )
         )
-

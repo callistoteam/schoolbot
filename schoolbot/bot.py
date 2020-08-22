@@ -3,6 +3,7 @@ def load_cogs(bot):
         "schoolbot.cogs.events",
         "schoolbot.cogs.school",
         "schoolbot.cogs.general",
+        "jishaku",
     ]
     failed_list = []
 
