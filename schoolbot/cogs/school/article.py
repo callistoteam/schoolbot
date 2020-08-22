@@ -33,7 +33,7 @@ class Article(commands.Cog):
                         embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                     )
             else:
-                if scinfo == []:
+                if not scinfo:
                     return await msg.edit(
                         embed=discord.Embed(
                             title="아이엠스쿨에 등록되지 않았습니다. 확인하신후 다시 요청하세요",
@@ -41,7 +41,7 @@ class Article(commands.Cog):
                         )
                     )
                 else:
-                    if len(scinfo) > 1:
+                    if scinfo:
                         school_name_list = [school_name.name for school_name in scinfo]
                         school_name_list_with_num = [
                             str(index) + ". " + school_names
@@ -65,16 +65,16 @@ class Article(commands.Cog):
                                 embed=discord.Embed(title="시간 초과입니다. 처음부터 다시 시도해주세요.")
                             )
                         else:
-                            try:
-                                num = int(response.content) - 1
-                            except ValueError:
+                            if response.content.isdigit():
+                                num = response.content - 1
+                            else:
                                 return await msg.edit(
                                     embed=discord.Embed(
                                         title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요."
                                     )
                                 )
-                            else:
-                                choice = scinfo[num]
+
+                            choice = scinfo[num]
                     else:
                         choice = scinfo[0]
         else:
@@ -86,7 +86,7 @@ class Article(commands.Cog):
                 embed=discord.Embed(title="HTTP 요청 오류입니다", description=f"{e}")
             )
         else:
-            if scarticles == []:
+            if not scarticles:
                 return await msg.edit(
                     embed=discord.Embed(
                         title="아이엠스쿨에 게시된 게시물이 없습니다.",
