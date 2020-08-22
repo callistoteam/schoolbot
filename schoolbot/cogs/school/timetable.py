@@ -40,7 +40,7 @@ class TimeTable(commands.Cog):
                     return await msg.edit(
                         embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                     )
-            if len(scinfo.data) > 1:
+            if scinfo.data:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
                 ]
@@ -103,7 +103,8 @@ class TimeTable(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="죄송합니다. 현재 고등학교는 지원하지않습니다.")  # 고등학교 지원할때 빼면됨
             )
-
+        else:
+            return await msg.edit(embed=discord.Embed(title="죄송합니다. 지원하지 않는 학교입니다."))
         try:
             if not date:
                 sctimetable = await self.neis.timeTable(
@@ -120,14 +121,8 @@ class TimeTable(commands.Cog):
                     GRADE=grade,
                     CLASS_NM=class_nm,
                 )
-        except Exception as e:
-            if isinstance(e, DataNotFound):
-                return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                )
-            return await msg.edit(
-                embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-            )
+        except DataNotFound:
+            return await msg.edit(embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요"))
 
         tt_scname = sctimetable.data[0]["SCHUL_NM"]
         tt_day = sctimetable.data[0]["ALL_TI_YMD"]

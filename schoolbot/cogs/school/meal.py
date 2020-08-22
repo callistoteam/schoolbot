@@ -31,7 +31,7 @@ class Meal(commands.Cog):
                     return await msg.edit(
                         embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                     )
-            if len(scinfo.data) > 1:
+            if scinfo.data:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
                 ]
@@ -86,17 +86,8 @@ class Meal(commands.Cog):
                 scmeal = await self.neis.mealServiceDietInfo(AE, SE)
             else:
                 scmeal = await self.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
-        except Exception as e:
-            if isinstance(e, DataNotFound):
-                return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                )
-            else:
-                # str(uuid.uuid1())
-                # traceback.format_exc()
-                return await msg.edit(
-                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                )
+        except DataNotFound:
+            return await msg.edit(embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요"))
 
         meal_day = str(scmeal.MLSV_YMD)
         meal = scmeal.DDISH_NM.replace("<br/>", "\n")

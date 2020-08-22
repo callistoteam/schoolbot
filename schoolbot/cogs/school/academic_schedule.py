@@ -1,8 +1,5 @@
 import asyncio
 
-# import traceback
-# import uuid
-
 import neispy
 from neispy import DataNotFound
 import discord
@@ -31,7 +28,7 @@ class AcademicSchedule(commands.Cog):
                     return await msg.edit(
                         embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
                     )
-            if len(scinfo.data) > 1:
+            if scinfo.data:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
                 ]
@@ -86,17 +83,8 @@ class AcademicSchedule(commands.Cog):
                 scacca = await self.neis.SchoolSchedule(AE, SE)
             else:
                 scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
-        except Exception as e:
-            if isinstance(e, DataNotFound):
-                return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                )
-            else:
-                # str(uuid.uuid1())
-                # traceback.format_exc()
-                return await msg.edit(
-                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                )
+        except DataNotFound:
+            return await msg.edit(embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요"))
 
         acca_day = scacca.AA_YMD
         await msg.edit(
