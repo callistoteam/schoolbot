@@ -1,8 +1,5 @@
 import asyncio
 
-# import traceback
-# import uuid
-
 import neispy
 from neispy import DataNotFound
 import discord
@@ -20,17 +17,10 @@ class AcademicSchedule(commands.Cog):
         if schoolname:
             try:
                 scinfo = await self.neis.schoolInfo(SCHUL_NM=schoolname, rawdata=True)
-            except Exception as e:
-                if isinstance(e, DataNotFound):
-                    return await msg.edit(
-                        embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                    )
-                else:
-                    # str(uuid.uuid1())
-                    # traceback.format_exc()
-                    return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                    )
+            except DataNotFound:
+                return await msg.edit(
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                )
             if len(scinfo.data) > 1:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
@@ -58,17 +48,15 @@ class AcademicSchedule(commands.Cog):
                         embed=discord.Embed(title="시간 초과입니다. 처음부터 다시 시도해주세요.")
                     )
                 else:
-                    fetch_msg = await ctx.fetch_message(response.id)
-                    try:
-                        num = int(fetch_msg.content) - 1
-                    except ValueError:
+                    if response.content.isdigit():
+                        num = response.content - 1
+                    else:
                         return await msg.edit(
                             embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.")
                         )
-                    else:
-                        choice = scinfo.data[num]
-                        AE = choice["ATPT_OFCDC_SC_CODE"]
-                        SE = choice["SD_SCHUL_CODE"]
+                    choice = scinfo.data[num]
+                    AE = choice["ATPT_OFCDC_SC_CODE"]
+                    SE = choice["SD_SCHUL_CODE"]
             else:
                 choice = scinfo.data[0]
                 AE = choice["ATPT_OFCDC_SC_CODE"]
@@ -86,17 +74,8 @@ class AcademicSchedule(commands.Cog):
                 scacca = await self.neis.SchoolSchedule(AE, SE)
             else:
                 scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
-        except Exception as e:
-            if isinstance(e, DataNotFound):
-                return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                )
-            else:
-                # str(uuid.uuid1())
-                # traceback.format_exc()
-                return await msg.edit(
-                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                )
+        except DataNotFound:
+            return await msg.edit(embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요"))
 
         acca_day = scacca.AA_YMD
         await msg.edit(
