@@ -21,7 +21,7 @@ class Meal(commands.Cog):
                 return await msg.edit(
                     embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
                 )
-            if scinfo.data:
+            if len(scinfo.data) > 1:
                 school_name_list = [
                     school_name["SCHUL_NM"] for school_name in scinfo.data
                 ]

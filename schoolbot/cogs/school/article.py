@@ -31,7 +31,7 @@ class Article(commands.Cog):
                         )
                     )
                 else:
-                    if scinfo:
+                    if len(scinfo) > 1:
                         school_name_list = [school_name.name for school_name in scinfo]
                         school_name_list_with_num = [
                             str(index) + ". " + school_names
