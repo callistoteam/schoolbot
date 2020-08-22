@@ -56,7 +56,7 @@ class Article(commands.Cog):
                             )
                         else:
                             if response.content.isdigit():
-                                num = response.content - 1
+                                num = int(response.content) - 1
                             else:
                                 return await msg.edit(
                                     embed=discord.Embed(
