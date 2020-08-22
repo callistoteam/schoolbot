@@ -32,5 +32,6 @@ jobs:
     - name: Test with pytest
       env: 
         API_KEY: None
+        channel_id: None
       run: |
         pytest
