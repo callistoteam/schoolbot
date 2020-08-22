@@ -9,7 +9,6 @@ from neispy import DataNotFound
 import discord
 from discord.ext import commands
 
-
 class Search(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
@@ -89,7 +88,7 @@ class Search(commands.Cog):
         embed.add_field(name="학교 ID", value=f"{AE}{SE}")
         embed.add_field(name="유형", value=choice["SCHUL_KND_SC_NM"])
         embed.add_field(
-            name="설립일", value=datetime.datetime.strptime(choice["FOND_YMD"], "%Y%m%d")
+            name="설립일", value=datetime.datetime.strptime(choice["FOND_YMD"], "%Y%m%d").strftime('%Y-%m-%d')
         )
         embed.add_field(name="남녀 구분", value=choice["COEDU_SC_NM"])
         embed.add_field(name="우편번호", value=choice["ORG_RDNZC"])
