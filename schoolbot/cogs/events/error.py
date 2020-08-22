@@ -31,6 +31,8 @@ class Error(commands.Cog):
                 "명령어 사용법이 잘못되었습니다. 지정한 값이 잘못되었습니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
                 delete_after=5,
             )
+        elif isinstance(error, commands.NotOwner):
+            await ctx.send("관리자만 사용하실수있는 명령어입니다.", delete_after=5)
         else:
             trace_uuid = str(uuid.uuid4())
             await ctx.send(
@@ -54,12 +56,12 @@ class Error(commands.Cog):
             if not error.__cause__:
                 trace_embed.add_field(
                     name="Traceback:",
-                    value=f"```py\n{''.join(traceback.format_exception(type(error), error, error.__traceback__))}\n```",
+                    value=f"```py\n{''.join(traceback.format_exception(type(error), error, error.__traceback__, limit=3))}\n```",
                 )
             else:
                 trace_embed.add_field(
                     name="Traceback:",
-                    value=f"```py\n{''.join(traceback.format_exception(type(error.__cause__), error.__cause__, error.__cause__.__traceback__))}\n```",
+                    value=f"```py\n{''.join(traceback.format_exception(type(error.__cause__), error.__cause__, error.__cause__.__traceback__, limit=3))}\n```",
                 )
             channel = await self.bot.fetch_channel(os.environ["channel_id"])
             await channel.send(embed=trace_embed)
