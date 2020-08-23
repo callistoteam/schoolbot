@@ -69,10 +69,12 @@ class Search(commands.Cog):
                         choice = scinfo.data[num]
                         AE = choice["ATPT_OFCDC_SC_CODE"]
                         SE = choice["SD_SCHUL_CODE"]
+                        SN = choice["SCHUL_NM"]
             else:
                 choice = scinfo.data[0]
                 AE = choice["ATPT_OFCDC_SC_CODE"]
                 SE = choice["SD_SCHUL_CODE"]
+                SN = choice["SCHUL_NM"]
         else:
             # 대충 여따가 쿼리문 적으면 된다는 주석
             # AE = 대충 교육청코드
@@ -80,6 +82,13 @@ class Search(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="학교명을 입력해주세요")
             )  # 쿼리문 쓰고 지워도 되는거
+        
+        if "초등학교" in SN:
+            scclass = "els"
+        elif "중학교" in SN:
+            scclass = "mis"
+        elif "고등학교" in SN:
+            scclass = "his"
 
         embed = discord.Embed(title="검색 정보", description="")
         embed.add_field(
@@ -98,6 +107,6 @@ class Search(commands.Cog):
         embed.add_field(name="홈페이지", value=choice["HMPG_ADRES"])
         embed.add_field(name="설립 유형", value=choice["FOND_SC_NM"])
         embed.add_field(
-            name="검색된 정보가 일치한가요?", value=f"`?설정 학교 {AE}|{SE}`를 입력해서 학교를 설정할 수 있습니다!"
+            name="검색된 정보가 일치한가요?", value=f"`?설정 학교 {AE}|{SE}|{scclass} <학년> <반>`를 입력해서 학교를 설정할 수 있습니다!"
         )
         await msg.edit(embed=embed)

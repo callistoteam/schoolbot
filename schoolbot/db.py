@@ -21,12 +21,12 @@ async def get_user_data(id):
             return await cur.fetchone()
 
 
-async def create_user_data(id, neis_ae, neis_se):
+async def create_user_data(id, neis_ae, neis_se, grade, class_nm, scclass):
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
             await cur.execute(
-                "INSERT INTO `users`(`id`, `neis_ae`, `neis_se`) VALUES (%s,%s,%s);",
-                (id, neis_ae, neis_se),
+                "INSERT INTO `users`(`id`, `neis_ae`, `neis_se`, `grade`, `class_nm`, `class`) VALUES (%s,%s,%s,%s,%s,%s);",
+                (id, neis_ae, neis_se, grade, class_nm, scclass),
             )
             return
 
@@ -40,11 +40,11 @@ async def change_public(id, public):
             return
 
 
-async def update_school(id, neis_ae, neis_se):
+async def update_school(id, neis_ae, neis_se, grade, class_nm, scclass):
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
             await cur.execute(
-                "UPDATE `users` SET `neis_ae` = %s, `neis_se` = %s WHERE ID = %s;",
-                (neis_ae, neis_se, id),
+                "UPDATE `users` SET `neis_ae` = %s, `neis_se` = %s, `grade` = %s, `class_nm` = %s, `class` = %s WHERE ID = %s;",
+                (neis_ae, neis_se, grade, class_nm, scclass, id),
             )
             return
