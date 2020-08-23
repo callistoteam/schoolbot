@@ -2,13 +2,8 @@ import discord
 from discord.ext import commands
 
 import schoolbot
-import sys
-import os
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-from utils import db
-
+from schoolbot import db
 
 class Ready(commands.Cog):
     def __init__(self, bot):
