@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import neispy
 from neispy import DataNotFound
@@ -16,7 +17,7 @@ class Meal(commands.Cog):
     async def render_meal_image(self, meals):
         async with aiohttp.ClientSession() as session:
             meals = '&meal='.join([ urllib.parse.quote(x) for x in meals.split('<br/>') ])
-            async with session.post(f"https://api.schoolbot.callisto.team/render/?meal={meals}", headers={ "Authorization":  "youshallnotpass" }) as response:
+            async with session.post(f"https://api.schoolbot.callisto.team/render/?meal={meals}", headers={ "Authorization":  os.environ["schoolbotAPI"] }) as response:
                 return await response.json()
 
     @commands.command(name="급식")
