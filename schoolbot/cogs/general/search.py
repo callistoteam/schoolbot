@@ -80,6 +80,8 @@ class Search(commands.Cog):
             scclass = "mis"
         elif "고등학교" in SN:
             scclass = "his"
+        else:
+            raise ValueError
 
         embed = discord.Embed(title="검색 정보", description="")
         embed.add_field(

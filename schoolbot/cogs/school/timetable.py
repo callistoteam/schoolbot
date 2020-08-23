@@ -179,7 +179,8 @@ class TimeTable(commands.Cog):
                         colour=discord.Colour.blurple(),
                     )  # 고등학교 지원할때 빼면됨
                 )
-
+            else:
+                raise ValueError
             try:
                 if not date:
                     sctimetable = await self.neis.timeTable(
