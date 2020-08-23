@@ -40,5 +40,4 @@ class Help(commands.Cog):
             inline=False,
         )
 
-
         await ctx.send(embed=embed)

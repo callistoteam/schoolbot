@@ -9,6 +9,7 @@ from neispy import DataNotFound
 import discord
 from discord.ext import commands
 
+
 class Search(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
@@ -82,7 +83,7 @@ class Search(commands.Cog):
             return await msg.edit(
                 embed=discord.Embed(title="학교명을 입력해주세요")
             )  # 쿼리문 쓰고 지워도 되는거
-        
+
         if "초등학교" in SN:
             scclass = "els"
         elif "중학교" in SN:
@@ -97,7 +98,10 @@ class Search(commands.Cog):
         embed.add_field(name="학교 ID", value=f"{AE}{SE}")
         embed.add_field(name="유형", value=choice["SCHUL_KND_SC_NM"])
         embed.add_field(
-            name="설립일", value=datetime.datetime.strptime(choice["FOND_YMD"], "%Y%m%d").strftime('%Y-%m-%d')
+            name="설립일",
+            value=datetime.datetime.strptime(choice["FOND_YMD"], "%Y%m%d").strftime(
+                "%Y-%m-%d"
+            ),
         )
         embed.add_field(name="남녀 구분", value=choice["COEDU_SC_NM"])
         embed.add_field(name="우편번호", value=choice["ORG_RDNZC"])
@@ -107,6 +111,7 @@ class Search(commands.Cog):
         embed.add_field(name="홈페이지", value=choice["HMPG_ADRES"])
         embed.add_field(name="설립 유형", value=choice["FOND_SC_NM"])
         embed.add_field(
-            name="검색된 정보가 일치한가요?", value=f"`?설정 학교 {AE}|{SE}|{scclass} <학년> <반>`를 입력해서 학교를 설정할 수 있습니다!"
+            name="검색된 정보가 일치한가요?",
+            value=f"`?설정 학교 {AE}|{SE}|{scclass} <학년> <반>`를 입력해서 학교를 설정할 수 있습니다!",
         )
         await msg.edit(embed=embed)

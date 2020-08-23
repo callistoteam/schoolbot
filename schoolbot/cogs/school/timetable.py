@@ -1,7 +1,5 @@
 import asyncio
-
-# import traceback
-# import uuid
+from attr import validate
 
 import neispy
 from neispy import DataNotFound
@@ -9,6 +7,7 @@ import discord
 from discord.ext import commands
 
 from schoolbot import db
+
 
 class TimeTable(commands.Cog):
     def __init__(self, bot, apikey):
@@ -24,7 +23,11 @@ class TimeTable(commands.Cog):
         class_nm: int = None,
         date: int = None,
     ):
-        msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
+        msg = await ctx.send(
+            embed=discord.Embed(
+                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+            )
+        )
         if school_name and school_name.isdigit():
             if len(school_name) == 8:
                 date = int(school_name)
@@ -35,12 +38,20 @@ class TimeTable(commands.Cog):
             else:
                 class_nm = grade
                 grade = school_name
+        if not grade or not class_nm:
+            return await ctx.send(
+                embed=discord.Embed(
+                    title="학년과 반정보를 입력해주세요!", colour=discord.Colour.red()
+                )
+            )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and school_name == None:
             AE = user_data[1]
             SE = user_data[2]
-            if not grade: grade = user_data[5]
-            if not class_nm: class_nm = user_data[6]
+            if not grade:
+                grade = user_data[5]
+            if not class_nm:
+                class_nm = user_data[6]
             scclass = user_data[7]
             if scclass != "his":
                 try:
@@ -59,43 +70,42 @@ class TimeTable(commands.Cog):
                             GRADE=grade,
                             CLASS_NM=class_nm,
                         )
-                except Exception as e:
-                    if isinstance(e, DataNotFound):
-                        return await msg.edit(
-                            embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                        )
+                except DataNotFound:
                     return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
+                        embed=discord.Embed(
+                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            colour=discord.Colour.red(),
+                        )
                     )
 
                 tt_scname = sctimetable.data[0]["SCHUL_NM"]
                 tt_day = sctimetable.data[0]["ALL_TI_YMD"]
                 await msg.edit(
-                    embed=discord.Embed(
-                        title=f"{tt_scname}의 {tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일 시간표입니다.",
-                        description="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
-                    )
+                    embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
+                ).add_field(
+                    name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
+                    value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
                 )
             else:
                 return await msg.edit(
-                    embed=discord.Embed(title="죄송합니다. 현재 고등학교는 지원하지않습니다.")  # 고등학교 지원할때 빼면됨
+                    embed=discord.Embed(
+                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.", colour=discord.Colour.red(),
+                    )  # 고등학교 지원할때 빼면됨
                 )
-                
+
         else:
             if school_name:
                 try:
-                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name, rawdata=True)
-                except Exception as e:
-                    if isinstance(e, DataNotFound):
-                        return await msg.edit(
-                            embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                    scinfo = await self.neis.schoolInfo(
+                        SCHUL_NM=school_name, rawdata=True
+                    )
+                except DataNotFound:
+                    return await msg.edit(
+                        embed=discord.Embed(
+                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            colour=discord.Colour.red(),
                         )
-                    else:
-                        # str(uuid.uuid1())
-                        # traceback.format_exc()
-                        return await msg.edit(
-                            embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                        )
+                    )
                 if len(scinfo.data) > 1:
                     school_name_list = [
                         school_name["SCHUL_NM"] for school_name in scinfo.data
@@ -108,6 +118,7 @@ class TimeTable(commands.Cog):
                         embed=discord.Embed(
                             title="여러개의 검색결과입니다. 다음중 선택해주세요.",
                             description="\n".join(school_name_list_with_num),
+                            colour=discord.Colour.blurple(),
                         )
                     )
 
@@ -120,7 +131,10 @@ class TimeTable(commands.Cog):
                         )
                     except asyncio.TimeoutError:
                         return await msg.edit(
-                            embed=discord.Embed(title="시간 초과입니다. 처음부터 다시 시도해주세요.")
+                            embed=discord.Embed(
+                                title="시간 초과입니다. 처음부터 다시 시도해주세요.",
+                                colour=discord.Colour.blurple(),
+                            )
                         )
                     else:
                         fetch_msg = await ctx.fetch_message(response.id)
@@ -128,7 +142,10 @@ class TimeTable(commands.Cog):
                             num = int(fetch_msg.content) - 1
                         except ValueError:
                             return await msg.edit(
-                                embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.")
+                                embed=discord.Embed(
+                                    title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
+                                    colour=discord.Colour.blurple(),
+                                )
                             )
                         else:
                             choice = scinfo.data[num]
@@ -146,7 +163,9 @@ class TimeTable(commands.Cog):
                 # SE = 대충 표준학교코드
                 # scclass = 대충 초 중 고 고르는거
                 return await msg.edit(
-                    embed=discord.Embed(title="학교명을 입력해주세요")
+                    embed=discord.Embed(
+                        title="학교명을 입력해주세요", colour=discord.Colour.blurple()
+                    )
                 )  # 쿼리문 쓰고 지워도 되는거
 
             # if scclass:
@@ -157,7 +176,10 @@ class TimeTable(commands.Cog):
                 scclass = "mis"
             elif "고등학교" in SN:
                 return await msg.edit(
-                    embed=discord.Embed(title="죄송합니다. 현재 고등학교는 지원하지않습니다.")  # 고등학교 지원할때 빼면됨
+                    embed=discord.Embed(
+                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.",
+                        colour=discord.Colour.blurple(),
+                    )  # 고등학교 지원할때 빼면됨
                 )
 
             try:
@@ -176,20 +198,18 @@ class TimeTable(commands.Cog):
                         GRADE=grade,
                         CLASS_NM=class_nm,
                     )
-            except Exception as e:
-                if isinstance(e, DataNotFound):
-                    return await msg.edit(
-                        embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
-                    )
+            except DataNotFound:
                 return await msg.edit(
-                    embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
+                    embed=discord.Embed(
+                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                    )
                 )
 
             tt_scname = sctimetable.data[0]["SCHUL_NM"]
             tt_day = sctimetable.data[0]["ALL_TI_YMD"]
             await msg.edit(
-                embed=discord.Embed(
-                    title=f"{tt_scname}의 {tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일 시간표입니다.",
-                    description="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
-                )
+                embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
+            ).add_field(
+                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
+                value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
             )

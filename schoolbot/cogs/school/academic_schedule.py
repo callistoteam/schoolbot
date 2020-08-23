@@ -1,7 +1,5 @@
 import asyncio
-
-# import traceback
-# import uuid
+from os import name
 
 import neispy
 from neispy import DataNotFound
@@ -10,6 +8,7 @@ from discord.ext import commands
 
 from schoolbot import db
 
+
 class AcademicSchedule(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
@@ -17,9 +16,16 @@ class AcademicSchedule(commands.Cog):
 
     @commands.command(name="학사일정")
     async def _academic_schedule(self, ctx, school_name: str = None, date: int = None):
-        msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
+        msg = await ctx.send(
+            embed=discord.Embed(
+                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+            )
+        )
         user_data = await db.get_user_data(ctx.author.id)
-        if user_data and ((date == None and school_name == None) or (school_name and school_name.isdigit())):
+        if user_data and (
+            (date == None and school_name == None)
+            or (school_name and school_name.isdigit())
+        ):
             AE = user_data[1]
             SE = user_data[2]
             if school_name and school_name.isdigit():
@@ -29,40 +35,37 @@ class AcademicSchedule(commands.Cog):
                     scacca = await self.neis.SchoolSchedule(AE, SE)
                 else:
                     scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
-            except Exception as e:
-                if isinstance(e, DataNotFound):
-                    return await msg.edit(
-                        embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+            except DataNotFound:
+                return await msg.edit(
+                    embed=discord.Embed(
+                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
                     )
-                else:
-                    # str(uuid.uuid1())
-                    # traceback.format_exc()
-                    return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                    )
+                )
 
             acca_day = scacca.AA_YMD
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scacca.SCHUL_NM}의 학사일정입니다.\n\n{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
-                    description=f"**{scacca.EVENT_NM}**\n{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+                    title=f"{scacca.SCHUL_NM}의 학사일정입니다",
+                    description=f"{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
+                    colour=0x2E3136,
+                ).add_field(
+                    name=f"**{scacca.EVENT_NM}**",
+                    value=f"{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
                 )
             )
         else:
             if school_name:
                 try:
-                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name, rawdata=True)
-                except Exception as e:
-                    if isinstance(e, DataNotFound):
-                        return await msg.edit(
-                            embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                    scinfo = await self.neis.schoolInfo(
+                        SCHUL_NM=school_name, rawdata=True
+                    )
+                except DataNotFound:
+                    return await msg.edit(
+                        embed=discord.Embed(
+                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            colour=discord.Colour.red(),
                         )
-                    else:
-                        # str(uuid.uuid1())
-                        # traceback.format_exc()
-                        return await msg.edit(
-                            embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                        )
+                    )
                 if len(scinfo.data) > 1:
                     school_name_list = [
                         school_name["SCHUL_NM"] for school_name in scinfo.data
@@ -75,6 +78,7 @@ class AcademicSchedule(commands.Cog):
                         embed=discord.Embed(
                             title="여러개의 검색결과입니다. 다음중 선택해주세요.",
                             description="\n".join(school_name_list_with_num),
+                            colour=discord.Colour.blurple(),
                         )
                     )
 
@@ -87,14 +91,20 @@ class AcademicSchedule(commands.Cog):
                         )
                     except asyncio.TimeoutError:
                         return await msg.edit(
-                            embed=discord.Embed(title="시간 초과입니다. 처음부터 다시 시도해주세요.")
+                            embed=discord.Embed(
+                                title="시간 초과입니다. 처음부터 다시 시도해주세요.",
+                                colour=discord.Colour.red(),
+                            )
                         )
                     else:
                         try:
                             num = int(response.content) - 1
                         except ValueError:
                             return await msg.edit(
-                                embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.")
+                                embed=discord.Embed(
+                                    title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
+                                    colour=discord.Colour.red(),
+                                )
                             )
                         else:
                             choice = scinfo.data[num]
@@ -109,7 +119,9 @@ class AcademicSchedule(commands.Cog):
                 # AE = 대충 교육청코드
                 # SE = 대충 표준학교코드
                 return await msg.edit(
-                    embed=discord.Embed(title="학교명을 입력해주세요")
+                    embed=discord.Embed(
+                        title="학교명을 입력해주세요", colour=discord.Colour.red()
+                    )
                 )  # 쿼리문 쓰고 지워도 되는거
 
             try:
@@ -117,22 +129,21 @@ class AcademicSchedule(commands.Cog):
                     scacca = await self.neis.SchoolSchedule(AE, SE)
                 else:
                     scacca = await self.neis.SchoolSchedule(AE, SE, AA_YMD=date)
-            except Exception as e:
-                if isinstance(e, DataNotFound):
-                    return await msg.edit(
-                        embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+            except DataNotFound:
+                return await msg.edit(
+                    embed=discord.Embed(
+                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
                     )
-                else:
-                    # str(uuid.uuid1())
-                    # traceback.format_exc()
-                    return await msg.edit(
-                        embed=discord.Embed(title="알수없는 오류입니다", description=f"{e}")
-                    )
+                )
 
             acca_day = scacca.AA_YMD
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scacca.SCHUL_NM}의 학사일정입니다.\n\n{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
-                    description=f"**{scacca.EVENT_NM}**\n{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+                    title=f"{scacca.SCHUL_NM}의 학사일정입니다",
+                    description=f"{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
+                    colour=0x2E3136,
+                ).add_field(
+                    name=f"**{scacca.EVENT_NM}**",
+                    value=f"{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
                 )
             )

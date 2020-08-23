@@ -5,6 +5,7 @@ import schoolbot
 
 from schoolbot import db
 
+
 class Ready(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
