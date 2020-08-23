@@ -79,7 +79,7 @@ class Meal(commands.Cog):
             # AE = 대충 교육청코드
             # SE = 대충 표준학교코드
             return await msg.edit(
-                embed=discord.Embed(title="학교명을 입력해주세요")
+                embed=discord.Embed(title="학교명을 입력해주세요", colour=discord.Colour.red(),)
             )  # 쿼리문 쓰고 지워도 되는거
 
         try:
@@ -88,13 +88,18 @@ class Meal(commands.Cog):
             else:
                 scmeal = await self.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
         except DataNotFound:
-            return await msg.edit(embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요"))
+            return await msg.edit(
+                embed=discord.Embed(
+                    title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red(),
+                )
+            )
 
         meal_day = str(scmeal.MLSV_YMD)
         await msg.edit(
-            embed=discord.Embed(title=f"{scmeal.SCHUL_NM}의 급식입니다.",).add_field(
+            embed=discord.Embed(
+                title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136
+            ).add_field(
                 name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
                 value=scmeal.DDISH_NM.replace("<br/>", "\n"),
-                colour=0x2E3136,
             )
         )
