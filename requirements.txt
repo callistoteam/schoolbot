@@ -2,3 +2,4 @@ discord.py
 neispy
 aiomysql
 jishaku
+aiohttp
