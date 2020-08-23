@@ -14,13 +14,21 @@ class Article(commands.Cog):
 
     @commands.command(name="게시물")
     async def _article(self, ctx, school_name: str = None):
-        msg = await ctx.send(embed=discord.Embed(title="정보를 요청합니다 잠시만 기다려주세요."))
+        msg = await ctx.send(
+            embed=discord.Embed(
+                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+            )
+        )
         if school_name:
             try:
                 scinfo = await self.client.search_school(school_name)
             except HTTPException as e:
                 return await msg.edit(
-                    embed=discord.Embed(title="HTTP 요청 오류입니다", description=f"{e}")
+                    embed=discord.Embed(
+                        title="HTTP 요청 오류입니다",
+                        description=f"{e}",
+                        colour=discord.Colour.red(),
+                    )
                 )
             else:
                 if not scinfo:
@@ -28,6 +36,7 @@ class Article(commands.Cog):
                         embed=discord.Embed(
                             title="아이엠스쿨에 등록되지 않았습니다. 확인하신후 다시 요청하세요",
                             description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ",
+                            colour=discord.Colour.red(),
                         )
                     )
                 else:
@@ -41,6 +50,7 @@ class Article(commands.Cog):
                             embed=discord.Embed(
                                 title="여러개의 검색결과입니다. 다음중 선택해주세요.",
                                 description="\n".join(school_name_list_with_num),
+                                colour=discord.Colour.blurple(),
                             )
                         )
                         try:
@@ -52,7 +62,10 @@ class Article(commands.Cog):
                             )
                         except asyncio.TimeoutError:
                             return await msg.edit(
-                                embed=discord.Embed(title="시간 초과입니다. 처음부터 다시 시도해주세요.")
+                                embed=discord.Embed(
+                                    title="시간 초과입니다. 처음부터 다시 시도해주세요.",
+                                    colour=discord.Colour.red(),
+                                )
                             )
                         else:
                             if response.content.isdigit():
@@ -60,7 +73,8 @@ class Article(commands.Cog):
                             else:
                                 return await msg.edit(
                                     embed=discord.Embed(
-                                        title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요."
+                                        title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
+                                        colour=discord.Colour.red(),
                                     )
                                 )
 
@@ -68,12 +82,18 @@ class Article(commands.Cog):
                     else:
                         choice = scinfo[0]
         else:
-            return await msg.edit(embed=discord.Embed(title="학교명을 입력해주세요"))
+            return await msg.edit(
+                embed=discord.Embed(title="학교명을 입력해주세요", colour=discord.Colour.red())
+            )
         try:
             scarticles = await self.client.fetch_recent_article(choice.id)
         except HTTPException as e:
             return await msg.edit(
-                embed=discord.Embed(title="HTTP 요청 오류입니다", description=f"{e}")
+                embed=discord.Embed(
+                    title="HTTP 요청 오류입니다",
+                    description=f"{e}",
+                    colour=discord.Colour.red(),
+                )
             )
         else:
             if not scarticles:
@@ -81,6 +101,7 @@ class Article(commands.Cog):
                     embed=discord.Embed(
                         title="아이엠스쿨에 게시된 게시물이 없습니다.",
                         description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ",
+                        colour=discord.Colour.red(),
                     )
                 )
             else:
@@ -92,6 +113,7 @@ class Article(commands.Cog):
                         scarticles[position].date, "%Y.%m.%d"
                     ),
                     url=scarticles[position].link,
+                    colour=0x2E3136,
                 )
                 embed.set_author(
                     name=scarticles[position].organization_name,
@@ -141,6 +163,7 @@ class Article(commands.Cog):
                                 scarticles[position].date, "%Y.%m.%d"
                             ),
                             url=scarticles[position].link,
+                            colour=0x2E3136,
                         )
                         embed.set_author(
                             name=scarticles[position].organization_name,
