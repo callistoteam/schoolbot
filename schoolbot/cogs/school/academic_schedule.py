@@ -97,19 +97,17 @@ class AcademicSchedule(commands.Cog):
                             )
                         )
                     else:
-                        try:
-                            num = int(response.content) - 1
-                        except ValueError:
+                        if response.content.isdigit():
+                            num = response.content - 1
+                        else:
                             return await msg.edit(
                                 embed=discord.Embed(
                                     title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
-                                    colour=discord.Colour.red(),
                                 )
                             )
-                        else:
-                            choice = scinfo.data[num]
-                            AE = choice["ATPT_OFCDC_SC_CODE"]
-                            SE = choice["SD_SCHUL_CODE"]
+                        choice = scinfo.data[num]
+                        AE = choice["ATPT_OFCDC_SC_CODE"]
+                        SE = choice["SD_SCHUL_CODE"]
                 else:
                     choice = scinfo.data[0]
                     AE = choice["ATPT_OFCDC_SC_CODE"]

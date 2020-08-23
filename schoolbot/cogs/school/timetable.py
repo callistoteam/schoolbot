@@ -138,20 +138,18 @@ class TimeTable(commands.Cog):
                         )
                     else:
                         fetch_msg = await ctx.fetch_message(response.id)
-                        try:
-                            num = int(fetch_msg.content) - 1
-                        except ValueError:
+                        if response.content.isdigit():
+                            num = response.content - 1
+                        else:
                             return await msg.edit(
                                 embed=discord.Embed(
                                     title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
-                                    colour=discord.Colour.blurple(),
                                 )
                             )
-                        else:
-                            choice = scinfo.data[num]
-                            AE = choice["ATPT_OFCDC_SC_CODE"]
-                            SE = choice["SD_SCHUL_CODE"]
-                            SN = choice["SCHUL_NM"]
+                        choice = scinfo.data[num]
+                        AE = choice["ATPT_OFCDC_SC_CODE"]
+                        SE = choice["SD_SCHUL_CODE"]
+                        SN = choice["SCHUL_NM"]
                 else:
                     choice = scinfo.data[0]
                     AE = choice["ATPT_OFCDC_SC_CODE"]
