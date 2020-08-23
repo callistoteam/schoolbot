@@ -13,7 +13,7 @@ class Ready(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
 
-        db.pool = await db.connect_db()
+        db.engine = await db.connect_db()
 
         print("Login.. : ")
         print(self.bot.user.name)
