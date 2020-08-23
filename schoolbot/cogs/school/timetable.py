@@ -143,8 +143,8 @@ class TimeTable(commands.Cog):
         tt_scname = sctimetable.data[0]["SCHUL_NM"]
         tt_day = sctimetable.data[0]["ALL_TI_YMD"]
         await msg.edit(
-            embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
-        ).add_field(
-            name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
-            value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
+            embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,).add_field(
+                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
+                value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
+            )
         )
