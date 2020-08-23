@@ -4,6 +4,7 @@ import datetime
 # import traceback
 # import uuid
 
+import os
 import neispy
 from neispy import DataNotFound
 import discord
@@ -11,9 +12,9 @@ from discord.ext import commands
 
 
 class Search(commands.Cog):
-    def __init__(self, bot, apikey):
+    def __init__(self, bot):
         self.bot = bot
-        self.neis = neispy.AsyncClient(apikey)
+        self.neis = neispy.AsyncClient(os.environ["API_KEY"])
 
     @commands.command(name="검색")
     async def _search(self, ctx, schoolname: str = None):
