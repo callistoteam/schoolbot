@@ -1,10 +1,12 @@
 import asyncio
+import os
 
 import neispy
 import os
 from neispy import DataNotFound
 import discord
 from discord.ext import commands
+import urllib.parse
 import aiohttp
 
 
