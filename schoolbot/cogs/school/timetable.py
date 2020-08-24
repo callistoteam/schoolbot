@@ -180,7 +180,11 @@ class TimeTable(commands.Cog):
                     )  # 고등학교 지원할때 빼면됨
                 )
             else:
-                raise ValueError
+                return await msg.edit(
+                    embed=discord.Embed(
+                        title="죄송합니다. 지원하지 않는 학교입니다.", colour=discord.Colour.red()
+                    )
+                )
             try:
                 if not date:
                     sctimetable = await self.neis.timeTable(
