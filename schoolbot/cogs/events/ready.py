@@ -3,6 +3,8 @@ from discord.ext import commands
 
 import schoolbot
 
+from schoolbot import db
+
 
 class Ready(commands.Cog):
     def __init__(self, bot):
@@ -10,6 +12,8 @@ class Ready(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+
+        db.pool = await db.connect_db()
 
         print("Login.. : ")
         print(self.bot.user.name)
