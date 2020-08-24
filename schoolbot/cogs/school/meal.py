@@ -1,15 +1,27 @@
 import asyncio
+import os
 
 import neispy
 from neispy import DataNotFound
 import discord
 from discord.ext import commands
+import urllib.parse
+import aiohttp
 
 
 class Meal(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
         self.neis = neispy.AsyncClient(apikey)
+
+    async def render_meal_image(self, meals):
+        async with aiohttp.ClientSession() as session:
+            meals = "&meal=".join([urllib.parse.quote(x) for x in meals.split("<br/>")])
+            async with session.post(
+                f"https://api.schoolbot.callisto.team/render/?meal={meals}",
+                headers={"Authorization": os.environ["MEAL_API_KEY"]},
+            ) as response:
+                return await response.json()
 
     @commands.command(name="급식")
     async def _meal(self, ctx, school_name: str = None, date: int = None):
@@ -95,10 +107,11 @@ class Meal(commands.Cog):
             )
 
         meal_day = str(scmeal.MLSV_YMD)
+        meal_image = await self.render_meal_image(scmeal.DDISH_NM)
         await msg.edit(
-            embed=discord.Embed(
-                title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136
-            ).add_field(
+            embed=discord.Embed(title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136)
+            .set_image(url=meal_image["url"])
+            .add_field(
                 name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
                 value=scmeal.DDISH_NM.replace("<br/>", "\n"),
             )
