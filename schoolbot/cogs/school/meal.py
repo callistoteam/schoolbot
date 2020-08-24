@@ -139,13 +139,13 @@ class Meal(commands.Cog):
                     embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
                 )
 
-        meal_day = str(scmeal.MLSV_YMD)
-        meal_image = await self.render_meal_image(scmeal.DDISH_NM)
-        await msg.edit(
-            embed=discord.Embed(title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136)
-            .set_image(url=meal_image["url"])
-            .add_field(
-                name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
-                value=scmeal.DDISH_NM.replace("<br/>", "\n"),
+            meal_day = str(scmeal.MLSV_YMD)
+            meal_image = await self.render_meal_image(scmeal.DDISH_NM)
+            await msg.edit(
+                embed=discord.Embed(title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136)
+                .set_image(url=meal_image["url"])
+                .add_field(
+                    name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
+                    value=scmeal.DDISH_NM.replace("<br/>", "\n"),
+                )
             )
-        )
