@@ -5,10 +5,10 @@ name: Python application
 
 on:
   push:
-    branches: [ master, beta, stable ]
+    branches: [ production, beta, stable ]
 
   pull_request:
-    branches: [ master, staging, beta, stable ]
+    branches: [ production, staging, beta, stable ]
 
 jobs:
   build:
