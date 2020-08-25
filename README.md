@@ -1,6 +1,6 @@
 # schoolbot
 
-> A discord bot that informs the school's academic calendar, timetable, and meals in South Korea
+> A discord bot that informs the school's academic calendar, timetable, and meals in Republic of Korea
 
 [![GitHub license](https://img.shields.io/github/license/callistoteam/schoolbot)](https://github.com/callistoteam/schoolbot/blob/master/LICENSE)
 [![Python application](https://github.com/callistoteam/schoolbot/workflows/Python%20application/badge.svg)](https://github.com/callistoteam/schoolbot/actions?query=workflow%3A%22Python+application%22)
