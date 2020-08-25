@@ -6,7 +6,7 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="도움말", aliases=["help"])
+    @commands.command(name="도움말", aliases=["help", "도움", "commands", "명령어"])
     async def _help(self, ctx):
         embed = discord.Embed(title="도움말", description="접두사: ``?``")
         embed.add_field(
