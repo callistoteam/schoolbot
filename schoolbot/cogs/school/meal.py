@@ -27,16 +27,16 @@ class Meal(commands.Cog):
 
     @commands.command(name="급식")
     async def _meal(self, ctx, school_name: str = None, date: int = None):
-        msg = await ctx.send(
-            embed=discord.Embed(
-                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
-            )
-        )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and (
             (date == None and school_name == None)
             or (school_name and school_name.isdigit())
         ):
+            msg = await ctx.send(
+                embed=discord.Embed(
+                    title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+                )
+            )
             AE = user_data[1]
             SE = user_data[2]
             if school_name and school_name.isdigit():
@@ -64,6 +64,11 @@ class Meal(commands.Cog):
             )
         else:
             if school_name:
+                msg = await ctx.send(
+                    embed=discord.Embed(
+                        title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+                    )
+                )
                 try:
                     scinfo = await self.neis.schoolInfo(
                         SCHUL_NM=school_name, rawdata=True
@@ -122,9 +127,7 @@ class Meal(commands.Cog):
                     AE = choice["ATPT_OFCDC_SC_CODE"]
                     SE = choice["SD_SCHUL_CODE"]
             else:
-                return await msg.edit(
-                    embed=discord.Embed(title="학교명을 입력해주세요")
-                )
+                return await ctx.send(embed=discord.Embed(title="학교명을 입력해주세요"))
 
             try:
                 if not date:
