@@ -9,7 +9,7 @@ class Setting(commands.Cog):
         self.bot = bot
 
     @commands.command(name="설정")
-    async def _search(self, ctx, key: str = None, *, value: str = None):
+    async def _setting(self, ctx, key: str = None, *, value: str = None):
         if key and value:
             args = " ".join(value.split("|")).split()
             if key == "학교":
