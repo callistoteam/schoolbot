@@ -1,5 +1,4 @@
 import asyncio
-from attr import validate
 
 import neispy
 from neispy import DataNotFound
