@@ -23,11 +23,6 @@ class TimeTable(commands.Cog):
         class_nm: int = None,
         date: int = None,
     ):
-        msg = await ctx.send(
-            embed=discord.Embed(
-                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
-            )
-        )
         if school_name and school_name.isdigit():
             if len(school_name) == 8:
                 date = int(school_name)
@@ -46,6 +41,11 @@ class TimeTable(commands.Cog):
             )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and school_name == None:
+            msg = await ctx.send(
+                embed=discord.Embed(
+                    title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+                )
+            )
             AE = user_data[1]
             SE = user_data[2]
             if not grade:
@@ -95,6 +95,11 @@ class TimeTable(commands.Cog):
 
         else:
             if school_name:
+                msg = await ctx.send(
+                    embed=discord.Embed(
+                        title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+                    )
+                )
                 try:
                     scinfo = await self.neis.schoolInfo(
                         SCHUL_NM=school_name, rawdata=True
@@ -137,9 +142,8 @@ class TimeTable(commands.Cog):
                             )
                         )
                     else:
-                        fetch_msg = await ctx.fetch_message(response.id)
                         if response.content.isdigit():
-                            num = response.content - 1
+                            num = int(response.content) - 1
                         else:
                             return await msg.edit(
                                 embed=discord.Embed(
@@ -160,7 +164,7 @@ class TimeTable(commands.Cog):
                 # AE = 대충 교육청코드
                 # SE = 대충 표준학교코드
                 # scclass = 대충 초 중 고 고르는거
-                return await msg.edit(
+                return await ctx.send(
                     embed=discord.Embed(
                         title="학교명을 입력해주세요", colour=discord.Colour.blurple()
                     )
@@ -211,7 +215,7 @@ class TimeTable(commands.Cog):
             tt_scname = sctimetable.data[0]["SCHUL_NM"]
             tt_day = sctimetable.data[0]["ALL_TI_YMD"]
             await msg.edit(
-                embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
+                embed=discord.Embed(title=tt_scname, colour=0x2E3136,)
             ).add_field(
                 name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
                 value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),

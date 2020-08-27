@@ -23,8 +23,7 @@ class AcademicSchedule(commands.Cog):
         )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and (
-            (date == None and school_name == None)
-            or (school_name and school_name.isdigit())
+            not (date and school_name) or (school_name and school_name.isdigit())
         ):
             AE = user_data[1]
             SE = user_data[2]
