@@ -142,9 +142,8 @@ class TimeTable(commands.Cog):
                             )
                         )
                     else:
-                        fetch_msg = await ctx.fetch_message(response.id)
                         if response.content.isdigit():
-                            num = response.content - 1
+                            num = int(response.content) - 1
                         else:
                             return await msg.edit(
                                 embed=discord.Embed(
