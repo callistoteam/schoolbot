@@ -122,12 +122,9 @@ class Meal(commands.Cog):
                     AE = choice["ATPT_OFCDC_SC_CODE"]
                     SE = choice["SD_SCHUL_CODE"]
             else:
-                # 대충 여따가 쿼리문 적으면 된다는 주석
-                # AE = 대충 교육청코드
-                # SE = 대충 표준학교코드
                 return await msg.edit(
                     embed=discord.Embed(title="학교명을 입력해주세요")
-                )  # 쿼리문 쓰고 지워도 되는거
+                )
 
             try:
                 if not date:
