@@ -216,6 +216,6 @@ class TimeTable(commands.Cog):
             await msg.edit(
                 embed=discord.Embed(title=tt_scname, colour=0x2E3136,)
             ).add_field(
-                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
+                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일",
                 value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
             )
