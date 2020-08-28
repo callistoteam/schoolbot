@@ -81,7 +81,7 @@ class Meal(commands.Cog):
                             colour=discord.Colour.red(),
                         )
                     )
-                if len(scinfo.data) > 1:
+                if len(scinfo) > 1:
                     school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names

@@ -22,7 +22,7 @@ class Search(commands.Cog):
                 return await msg.edit(
                     embed=discord.Embed(title="정보가 없습니다. 확인하신 후 다시 요청하세요")
                 )
-            if len(scinfo.data) > 1:
+            if len(scinfo) > 1:
                 school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                 school_name_list_with_num = [
                     str(index) + ". " + school_names

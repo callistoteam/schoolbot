@@ -39,7 +39,7 @@ class TimeTable(commands.Cog):
                 )
             )
         user_data = await db.get_user_data(ctx.author.id)
-        if user_data and school_name == None:
+        if user_data and not school_name:
             msg = await ctx.send(
                 embed=discord.Embed(
                     title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
@@ -103,9 +103,7 @@ class TimeTable(commands.Cog):
                     )
                 )
                 try:
-                    scinfo = await self.neis.schoolInfo(
-                        SCHUL_NM=school_name, rawdata=True
-                    )
+                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name)
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
@@ -113,7 +111,7 @@ class TimeTable(commands.Cog):
                             colour=discord.Colour.red(),
                         )
                     )
-                if len(scinfo.data) > 1:
+                if len(scinfo) > 1:
                     school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names
