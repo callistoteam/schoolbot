@@ -11,6 +11,18 @@
 
 If you want to use this API, contact to `매리#4633` by discord.
 
+## Database Structure
+
+### Table `users`
+|Name|Type|Description|
+|---|----|-----------|
+|id|TEXT|Discord id of user|
+|neis_ae|TEXT|Neis educational office code|
+|neis_se|TEXT|Neis school code|
+|grade|TEXT|grade setting|
+|class_nm|TEXT|class name|
+|class|TEXT|class|
+
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcallistoteam%2Fschoolbot.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcallistoteam%2Fschoolbot?ref=badge_large)
