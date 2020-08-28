@@ -1,5 +1,4 @@
 import asyncio
-from os import name
 
 import neispy
 from neispy import DataNotFound
@@ -12,7 +11,7 @@ from schoolbot import db
 class AcademicSchedule(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
-        self.neis = neispy.AsyncClient(apikey)
+        self.neis = neispy.Client(apikey)
 
     @commands.command(name="학사일정")
     async def _academic_schedule(self, ctx, school_name: str = None, date: int = None):
@@ -23,8 +22,7 @@ class AcademicSchedule(commands.Cog):
         )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and (
-            (date == None and school_name == None)
-            or (school_name and school_name.isdigit())
+            not (date and school_name) or (school_name and school_name.isdigit())
         ):
             AE = user_data[1]
             SE = user_data[2]
@@ -38,19 +36,19 @@ class AcademicSchedule(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
 
-            acca_day = scacca.AA_YMD
+            acca_day = str(scacca[0].AA_YMD)
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scacca.SCHUL_NM}의 학사일정입니다",
+                    title=f"{scacca[0].SCHUL_NM}의 학사일정입니다",
                     description=f"{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
                     colour=0x2E3136,
                 ).add_field(
-                    name=f"**{scacca.EVENT_NM}**",
-                    value=f"{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+                    name=f"**{scacca[0].EVENT_NM}**",
+                    value=f"{scacca[0].CNTNT if scacca[0].CNTNT else '해당 학사일정의 내용이 없습니다.'}",
                 )
             )
         else:
@@ -62,14 +60,12 @@ class AcademicSchedule(commands.Cog):
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
-                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            title="정보가 없습니다. 확인하신 후 다시 요청하세요",
                             colour=discord.Colour.red(),
                         )
                     )
                 if len(scinfo.data) > 1:
-                    school_name_list = [
-                        school_name["SCHUL_NM"] for school_name in scinfo.data
-                    ]
+                    school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names
                         for index, school_names in enumerate(school_name_list, 1)
@@ -105,13 +101,11 @@ class AcademicSchedule(commands.Cog):
                                     title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
                                 )
                             )
-                        choice = scinfo.data[num]
-                        AE = choice["ATPT_OFCDC_SC_CODE"]
-                        SE = choice["SD_SCHUL_CODE"]
+                        AE = scinfo[num].ATPT_OFCDC_SC_CODE
+                        SE = scinfo[num].SD_SCHUL_CODE
                 else:
-                    choice = scinfo.data[0]
-                    AE = choice["ATPT_OFCDC_SC_CODE"]
-                    SE = choice["SD_SCHUL_CODE"]
+                    AE = scinfo[0].ATPT_OFCDC_SC_CODE
+                    SE = scinfo[0].SD_SCHUL_CODE
             else:
                 # 대충 여따가 쿼리문 적으면 된다는 주석
                 # AE = 대충 교육청코드
@@ -130,18 +124,18 @@ class AcademicSchedule(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
 
-            acca_day = scacca.AA_YMD
+            acca_day = scacca[0].AA_YMD
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scacca.SCHUL_NM}의 학사일정입니다",
+                    title=f"{scacca[0].SCHUL_NM}의 학사일정입니다",
                     description=f"{acca_day[0:4]}년 {acca_day[4:6]}월 {acca_day[6:8]}일",
                     colour=0x2E3136,
                 ).add_field(
-                    name=f"**{scacca.EVENT_NM}**",
-                    value=f"{scacca.CNTNT if scacca.CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+                    name=f"**{scacca[0].EVENT_NM}**",
+                    value=f"{scacca[0].CNTNT if scacca[0].CNTNT else '해당 학사일정의 내용이 없습니다.'}",
                 )
             )
