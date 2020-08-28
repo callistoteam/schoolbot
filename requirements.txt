@@ -1,2 +1,5 @@
-discord.py
-neispy
+discord.py==1.4.1
+neispy==3.0.0
+aiomysql==0.0.20
+jishaku==1.19.1.200
+aiohttp==3.6.2
