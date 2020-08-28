@@ -14,7 +14,7 @@ from schoolbot import db
 class Meal(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
-        self.neis = neispy.AsyncClient(apikey)
+        self.neis = neispy.Client(apikey)
 
     async def render_meal_image(self, meals):
         async with aiohttp.ClientSession() as session:
@@ -53,13 +53,13 @@ class Meal(commands.Cog):
                     )
                 )
 
-            meal_day = str(scmeal.MLSV_YMD)
+            meal_day = str(scmeal[0].MLSV_YMD)
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136,
+                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.", colour=0x2E3136,
                 ).add_field(
                     name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
-                    value=scmeal.DDISH_NM.replace("<br/>", "\n"),
+                    value=scmeal[0].DDISH_NM.replace("<br/>", "\n"),
                 )
             )
         else:
@@ -81,9 +81,7 @@ class Meal(commands.Cog):
                         )
                     )
                 if len(scinfo.data) > 1:
-                    school_name_list = [
-                        school_name["SCHUL_NM"] for school_name in scinfo.data
-                    ]
+                    school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names
                         for index, school_names in enumerate(school_name_list, 1)
@@ -112,20 +110,18 @@ class Meal(commands.Cog):
                         )
                     else:
                         if response.content.isdigit():
-                            num = response.content - 1
+                            num = int(response.content) - 1
                         else:
                             return await msg.edit(
                                 embed=discord.Embed(
                                     title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
                                 )
                             )
-                        choice = scinfo.data[num]
-                        AE = choice["ATPT_OFCDC_SC_CODE"]
-                        SE = choice["SD_SCHUL_CODE"]
+                        AE = scinfo[num].ATPT_OFCDC_SC_CODE
+                        SE = scinfo[num].SD_SCHUL_CODE
                 else:
-                    choice = scinfo.data[0]
-                    AE = choice["ATPT_OFCDC_SC_CODE"]
-                    SE = choice["SD_SCHUL_CODE"]
+                    AE = scinfo[0].ATPT_OFCDC_SC_CODE
+                    SE = scinfo[0].SD_SCHUL_CODE
             else:
                 return await ctx.send(embed=discord.Embed(title="학교명을 입력해주세요"))
 
@@ -140,12 +136,14 @@ class Meal(commands.Cog):
                 )
 
             meal_day = str(scmeal.MLSV_YMD)
-            meal_image = await self.render_meal_image(scmeal.DDISH_NM)
+            meal_image = await self.render_meal_image(scmeal[0].DDISH_NM)
             await msg.edit(
-                embed=discord.Embed(title=f"{scmeal.SCHUL_NM}의 급식입니다.", colour=0x2E3136)
+                embed=discord.Embed(
+                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.", colour=0x2E3136
+                )
                 .set_image(url=meal_image["url"])
                 .add_field(
                     name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
-                    value=scmeal.DDISH_NM.replace("<br/>", "\n"),
+                    value=scmeal[0].DDISH_NM.replace("<br/>", "\n"),
                 )
             )
