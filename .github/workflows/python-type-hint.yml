@@ -14,6 +14,6 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so that typilus can access it.
     - uses: actions/checkout@v2
-    - uses: typilus/typilus-action@master
+    - uses: typilus/typilus-action@v0.9
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
