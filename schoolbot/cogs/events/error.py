@@ -16,7 +16,10 @@ class Error(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
-            return
+            await ctx.send(
+                "명령어를 찾을 수 없습니다. `?도움말` 명령어를 사용해 전체 명령어 목록을 볼 수 있습니다.", delete_after=5
+            )
+
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(
                 "명령어 사용법이 잘못되었습니다. 값이 부족합니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
@@ -34,7 +37,7 @@ class Error(commands.Cog):
             trace_uuid = str(uuid.uuid4())
             await ctx.send(
                 embed=discord.Embed(
-                    title="알 수 없는 오류가 발생했습니다.",
+                    title="알수없는 오류가 발생했습니다.",
                     description=f"다음 정보를 개발자에게 알려주시면 문제해결에 도움이됩니다.\n**UUID**: ``{trace_uuid}``",
                     colour=discord.Color.red(),
                 )

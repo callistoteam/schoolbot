@@ -1,4 +1,5 @@
 import asyncio
+from attr import validate
 
 import neispy
 from neispy import DataNotFound
@@ -11,7 +12,7 @@ from schoolbot import db
 class TimeTable(commands.Cog):
     def __init__(self, bot, apikey):
         self.bot = bot
-        self.neis = neispy.Client(apikey)
+        self.neis = neispy.AsyncClient(apikey)
 
     @commands.command(name="시간표")
     async def _timetable(
@@ -22,6 +23,11 @@ class TimeTable(commands.Cog):
         class_nm: int = None,
         date: int = None,
     ):
+        msg = await ctx.send(
+            embed=discord.Embed(
+                title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
+            )
+        )
         if school_name and school_name.isdigit():
             if len(school_name) == 8:
                 date = int(school_name)
@@ -35,16 +41,11 @@ class TimeTable(commands.Cog):
         if not grade or not class_nm:
             return await ctx.send(
                 embed=discord.Embed(
-                    title="학년과 반 정보를 입력해주세요!", colour=discord.Colour.red()
+                    title="학년과 반정보를 입력해주세요!", colour=discord.Colour.red()
                 )
             )
         user_data = await db.get_user_data(ctx.author.id)
-        if user_data and not school_name:
-            msg = await ctx.send(
-                embed=discord.Embed(
-                    title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
-                )
-            )
+        if user_data and school_name == None:
             AE = user_data[1]
             SE = user_data[2]
             if not grade:
@@ -72,38 +73,32 @@ class TimeTable(commands.Cog):
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
-                            title="정보가 없습니다. 확인하신 후 다시 요청하세요",
+                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
                             colour=discord.Colour.red(),
                         )
                     )
 
-                tt_day = str(sctimetable[0].ALL_TI_YMD)
+                tt_scname = sctimetable.data[0]["SCHUL_NM"]
+                tt_day = sctimetable.data[0]["ALL_TI_YMD"]
                 await msg.edit(
-                    embed=discord.Embed(
-                        title=sctimetable[0].SCHUL_NM,
-                        colour=0x2E3136,
-                    )
+                    embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
                 ).add_field(
                     name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
-                    value="\n".join([i.ITRT_CNTNT for i in sctimetable]),
+                    value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
                 )
             else:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.",
-                        colour=discord.Colour.red(),
+                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.", colour=discord.Colour.red(),
                     )  # 고등학교 지원할때 빼면됨
                 )
 
         else:
             if school_name:
-                msg = await ctx.send(
-                    embed=discord.Embed(
-                        title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
-                    )
-                )
                 try:
-                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name)
+                    scinfo = await self.neis.schoolInfo(
+                        SCHUL_NM=school_name, rawdata=True
+                    )
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
@@ -111,8 +106,10 @@ class TimeTable(commands.Cog):
                             colour=discord.Colour.red(),
                         )
                     )
-                if len(scinfo) > 1:
-                    school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
+                if len(scinfo.data) > 1:
+                    school_name_list = [
+                        school_name["SCHUL_NM"] for school_name in scinfo.data
+                    ]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names
                         for index, school_names in enumerate(school_name_list, 1)
@@ -140,27 +137,30 @@ class TimeTable(commands.Cog):
                             )
                         )
                     else:
+                        fetch_msg = await ctx.fetch_message(response.id)
                         if response.content.isdigit():
-                            num = int(response.content) - 1
+                            num = response.content - 1
                         else:
                             return await msg.edit(
                                 embed=discord.Embed(
                                     title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
                                 )
                             )
-                        AE = scinfo[num].ATPT_OFCDC_SC_CODE
-                        SE = scinfo[num].SD_SCHUL_CODE
-                        SN = scinfo[num].SCHUL_NM
+                        choice = scinfo.data[num]
+                        AE = choice["ATPT_OFCDC_SC_CODE"]
+                        SE = choice["SD_SCHUL_CODE"]
+                        SN = choice["SCHUL_NM"]
                 else:
-                    AE = scinfo[0].ATPT_OFCDC_SC_CODE
-                    SE = scinfo[0].SD_SCHUL_CODE
-                    SN = scinfo[0].SCHUL_NM
+                    choice = scinfo.data[0]
+                    AE = choice["ATPT_OFCDC_SC_CODE"]
+                    SE = choice["SD_SCHUL_CODE"]
+                    SN = choice["SCHUL_NM"]
             else:
                 # 대충 여따가 쿼리문 적으면 된다는 주석
                 # AE = 대충 교육청코드
                 # SE = 대충 표준학교코드
                 # scclass = 대충 초 중 고 고르는거
-                return await ctx.send(
+                return await msg.edit(
                     embed=discord.Embed(
                         title="학교명을 입력해주세요", colour=discord.Colour.blurple()
                     )
@@ -175,7 +175,7 @@ class TimeTable(commands.Cog):
             elif "고등학교" in SN:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.",
+                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.",
                         colour=discord.Colour.blurple(),
                     )  # 고등학교 지원할때 빼면됨
                 )
@@ -204,16 +204,15 @@ class TimeTable(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
-            tt_day = str(sctimetable[0].ALL_TI_YMD)
+
+            tt_scname = sctimetable.data[0]["SCHUL_NM"]
+            tt_day = sctimetable.data[0]["ALL_TI_YMD"]
             await msg.edit(
-                embed=discord.Embed(
-                    title=sctimetable[0].SCHUL_NM,
-                    colour=0x2E3136,
-                )
+                embed=discord.Embed(title=f"{tt_scname}", colour=0x2E3136,)
             ).add_field(
-                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일",
-                value="\n".join([i.ITRT_CNTNT for i in sctimetable]),
+                name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
+                value="\n".join([i["ITRT_CNTNT"] for i in sctimetable.data]),
             )
