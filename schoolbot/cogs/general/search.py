@@ -51,7 +51,9 @@ class Search(commands.Cog):
                         num = int(response.content) - 1
                     else:
                         return await msg.edit(
-                            embed=discord.Embed(title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",)
+                            embed=discord.Embed(
+                                title="잘못된값을 주셨습니다. 처음부터 다시 시도해주세요.",
+                            )
                         )
                     AE = scinfo[num].ATPT_OFCDC_SC_CODE
                     SE = scinfo[num].SD_SCHUL_CODE
