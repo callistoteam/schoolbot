@@ -129,7 +129,7 @@ class Article(commands.Cog):
                 await msg.add_reaction("◀")
                 await msg.add_reaction("⏹")
                 await msg.add_reaction("▶")
-                while True:
+                while not self.bot.is_closed():
                     try:
                         reaction, user = await self.bot.wait_for(
                             "reaction_add",
