@@ -35,7 +35,7 @@ class TimeTable(commands.Cog):
         if not grade or not class_nm:
             return await ctx.send(
                 embed=discord.Embed(
-                    title="학년과 반정보를 입력해주세요!", colour=discord.Colour.red()
+                    title="학년과 반 정보를 입력해주세요!", colour=discord.Colour.red()
                 )
             )
         user_data = await db.get_user_data(ctx.author.id)
@@ -72,7 +72,7 @@ class TimeTable(commands.Cog):
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
-                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            title="정보가 없습니다. 확인하신 후 다시 요청하세요",
                             colour=discord.Colour.red(),
                         )
                     )
@@ -87,7 +87,7 @@ class TimeTable(commands.Cog):
             else:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.", colour=discord.Colour.red(),
+                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.", colour=discord.Colour.red(),
                     )  # 고등학교 지원할때 빼면됨
                 )
 
@@ -173,7 +173,7 @@ class TimeTable(commands.Cog):
             elif "고등학교" in SN:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="죄송합니다. 현재 고등학교는 지원하지않습니다.",
+                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.",
                         colour=discord.Colour.blurple(),
                     )  # 고등학교 지원할때 빼면됨
                 )
@@ -202,7 +202,7 @@ class TimeTable(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
             tt_day = str(sctimetable[0].ALL_TI_YMD)

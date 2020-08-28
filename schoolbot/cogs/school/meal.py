@@ -49,7 +49,7 @@ class Meal(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
 
@@ -76,7 +76,7 @@ class Meal(commands.Cog):
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
-                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            title="정보가 없습니다. 확인하신 후 다시 요청하세요",
                             colour=discord.Colour.red(),
                         )
                     )
@@ -132,7 +132,7 @@ class Meal(commands.Cog):
                     scmeal = await self.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
             except DataNotFound:
                 return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신 후 다시 요청하세요")
                 )
 
             meal_day = str(scmeal.MLSV_YMD)

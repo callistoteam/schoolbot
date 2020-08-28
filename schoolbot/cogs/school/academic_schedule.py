@@ -36,7 +36,7 @@ class AcademicSchedule(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
 
@@ -60,7 +60,7 @@ class AcademicSchedule(commands.Cog):
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
-                            title="정보가 없습니다. 확인하신후 다시 요청하세요",
+                            title="정보가 없습니다. 확인하신 후 다시 요청하세요",
                             colour=discord.Colour.red(),
                         )
                     )
@@ -124,7 +124,7 @@ class AcademicSchedule(commands.Cog):
             except DataNotFound:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="정보가 없습니다. 확인하신후 다시 요청하세요", colour=discord.Colour.red()
+                        title="정보가 없습니다. 확인하신 후 다시 요청하세요", colour=discord.Colour.red()
                     )
                 )
 

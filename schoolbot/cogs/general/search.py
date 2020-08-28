@@ -20,7 +20,7 @@ class Search(commands.Cog):
                 scinfo = await self.neis.schoolInfo(SCHUL_NM=schoolname)
             except DataNotFound:
                 return await msg.edit(
-                    embed=discord.Embed(title="정보가 없습니다. 확인하신후 다시 요청하세요")
+                    embed=discord.Embed(title="정보가 없습니다. 확인하신 후 다시 요청하세요")
                 )
             if len(scinfo.data) > 1:
                 school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
