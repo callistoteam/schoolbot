@@ -5,10 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ production, beta, stable ]
-
+    branches: [ master, beta, stable ]
   pull_request:
-    branches: [ production, staging, beta, stable ]
+    branches: [ master, beta, stable ]
 
 jobs:
   build:
@@ -24,7 +23,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 black
+        pip install pytest pytest-asyncio flake8 black
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -33,8 +33,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Lint with black
       run: |
-        if ! black --check --diff . ; then
-            msg="file formatting does not match $(black --version); fix using \`black .\`"
-            black --check . 2>&1 | sed "s/would reformat \(.*\)/::error file=\1::$msg/"
-            exit 1
-        fi
+        black . --check
+    - name: Test with pytest
+      env:
+        ACCESS_TOKEN: None
+      run: |
+        pytest

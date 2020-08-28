@@ -1,10 +1,5 @@
 def load_cogs(bot):
-    extensions = [
-        "schoolbot.cogs.events",
-        "schoolbot.cogs.school",
-        "schoolbot.cogs.general",
-        "jishaku",
-    ]
+    extensions = ["schoolbot.cogs.events"]
     failed_list = []
 
     for extension in extensions:
