@@ -13,13 +13,13 @@ If you want to use this API, contact to `매리#4633` by discord.
 ## Database Structure
 
 ### Table `users`
-|Name|Type|Description|
-|---|----|-----------|
-|id|BIGINT(18)|Discord id of user|
-|neis_ae|VARCHAR(3)|Neis educational office code|
-|neis_se|VARCHAR(7)|Neis school code|
-|iamschool|VARCHAR(5)|Neis school code|
-|public|TINYINT(1)|whether profile public or not|
-|grade|INT(1)|grade setting|
-|class_nm|INT(2)|class name|
-|class|VERCHAR(3)|class|
+|Name|Type|Description|Default|
+|---|----|-----------|---|
+|id|BIGINT(18)|Discord id of user||
+|neis_ae|VARCHAR(3)|Neis educational office code||
+|neis_se|VARCHAR(7)|Neis school code||
+|iamschool|VARCHAR(5)|Neis school code|0|
+|public|TINYINT(1)|whether profile public or not|1|
+|grade|INT(1)|grade setting||
+|class_nm|INT(2)|class name||
+|class|VARCHAR(3)|class||
