@@ -16,12 +16,14 @@ If you want to use this API, contact to `매리#4633` by discord.
 ### Table `users`
 |Name|Type|Description|
 |---|----|-----------|
-|id|TEXT|Discord id of user|
-|neis_ae|TEXT|Neis educational office code|
-|neis_se|TEXT|Neis school code|
-|grade|TEXT|grade setting|
-|class_nm|TEXT|class name|
-|class|TEXT|class|
+|id|BIGINT(18)|Discord id of user|
+|neis_ae|VARCHAR(3)|Neis educational office code|
+|neis_se|VARCHAR(7)|Neis school code|
+|iamschool|VARCHAR(5)|Neis school code|
+|public|TINYINT(1)|whether profile public or not|
+|grade|INT(1)|grade setting|
+|class_nm|INT(2)|class name|
+|class|VERCHAR(3)|class|
 
 
 ## License
