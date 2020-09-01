@@ -45,13 +45,13 @@ class TimeTable(commands.Cog):
                     title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
                 )
             )
-            AE = user_data[1]
-            SE = user_data[2]
+            AE = user_data["neis_ae"]
+            SE = user_data["neis_se"]
             if not grade:
-                grade = user_data[5]
+                grade = user_data["grade"]
             if not class_nm:
-                class_nm = user_data[6]
-            scclass = user_data[7]
+                class_nm = user_data["class_nm"]
+            scclass = user_data["class"]
             if scclass != "his":
                 try:
                     if not date:
@@ -79,10 +79,7 @@ class TimeTable(commands.Cog):
 
                 tt_day = str(sctimetable[0].ALL_TI_YMD)
                 await msg.edit(
-                    embed=discord.Embed(
-                        title=sctimetable[0].SCHUL_NM,
-                        colour=0x2E3136,
-                    )
+                    embed=discord.Embed(title=sctimetable[0].SCHUL_NM, colour=0x2E3136,)
                 ).add_field(
                     name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}",
                     value="\n".join([i.ITRT_CNTNT for i in sctimetable]),
@@ -90,8 +87,7 @@ class TimeTable(commands.Cog):
             else:
                 return await msg.edit(
                     embed=discord.Embed(
-                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.",
-                        colour=discord.Colour.red(),
+                        title="죄송합니다. 현재 고등학교는 지원하지 않습니다.", colour=discord.Colour.red(),
                     )  # 고등학교 지원할때 빼면됨
                 )
 
@@ -209,10 +205,7 @@ class TimeTable(commands.Cog):
                 )
             tt_day = str(sctimetable[0].ALL_TI_YMD)
             await msg.edit(
-                embed=discord.Embed(
-                    title=sctimetable[0].SCHUL_NM,
-                    colour=0x2E3136,
-                )
+                embed=discord.Embed(title=sctimetable[0].SCHUL_NM, colour=0x2E3136,)
             ).add_field(
                 name=f"{tt_day[0:4]}년 {tt_day[4:6]}월 {tt_day[6:8]}일",
                 value="\n".join([i.ITRT_CNTNT for i in sctimetable]),
