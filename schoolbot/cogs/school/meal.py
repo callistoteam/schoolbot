@@ -37,8 +37,8 @@ class Meal(commands.Cog):
                     title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
                 )
             )
-            AE = user_data[1]
-            SE = user_data[2]
+            AE = user_data["neis_ae"]
+            SE = user_data["neis_se"]
             if school_name and school_name.isdigit():
                 date = int(school_name)
             try:
@@ -56,7 +56,8 @@ class Meal(commands.Cog):
             meal_day = str(scmeal[0].MLSV_YMD)
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.", colour=0x2E3136,
+                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.",
+                    colour=0x2E3136,
                 ).add_field(
                     name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
                     value=scmeal[0].DDISH_NM.replace("<br/>", "\n"),

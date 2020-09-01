@@ -10,6 +10,7 @@ async def connect_db():
         user=os.environ["DB_UNAME"],
         password=os.environ["DB_PW"],
         db=os.environ["DB_DBNAME"],
+        cursorclass=aiomysql.DictCursor,
         autocommit=True,
     )
 
