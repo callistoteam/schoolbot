@@ -1,0 +1,1 @@
+CREATE TABLE users(id BIGINT(18) PRIMARY KEY, neis_ae VARCHAR(3), neis_se VARCHAR(7), iamschool VARCHAR(5) DEFAULT 0, public TINYINT(1) DEFAULT 1, grade INT(1), class_nm INT(2), class VARCHAR(3));
