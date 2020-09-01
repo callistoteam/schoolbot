@@ -45,13 +45,13 @@ class TimeTable(commands.Cog):
                     title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
                 )
             )
-            AE = user_data[1]
-            SE = user_data[2]
+            AE = user_data["neis_ae"]
+            SE = user_data["neis_se"]
             if not grade:
-                grade = user_data[5]
+                grade = user_data["grade"]
             if not class_nm:
-                class_nm = user_data[6]
-            scclass = user_data[7]
+                class_nm = user_data["class_nm"]
+            scclass = user_data["class"]
             if scclass != "his":
                 try:
                     if not date:

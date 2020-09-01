@@ -24,8 +24,8 @@ class AcademicSchedule(commands.Cog):
         if user_data and (
             not (date and school_name) or (school_name and school_name.isdigit())
         ):
-            AE = user_data[1]
-            SE = user_data[2]
+            AE = user_data["neis_ae"]
+            SE = user_data["neis_se"]
             if school_name and school_name.isdigit():
                 date = int(school_name)
             try:
@@ -54,9 +54,7 @@ class AcademicSchedule(commands.Cog):
         else:
             if school_name:
                 try:
-                    scinfo = await self.neis.schoolInfo(
-                        SCHUL_NM=school_name, rawdata=True
-                    )
+                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name)
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
