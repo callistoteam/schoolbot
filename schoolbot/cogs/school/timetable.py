@@ -22,22 +22,13 @@ class TimeTable(commands.Cog):
         class_nm: int = None,
         date: int = None,
     ):
-        if school_name and school_name.isdigit():
+        if school_name.isdigit() and not grade:
             if len(school_name) == 8:
-                date = int(school_name)
-            elif class_nm:
-                date = class_nm
-                class_nm = grade
-                grade = school_name
+                date = school_name
             else:
-                class_nm = grade
-                grade = school_name
-        if not grade or not class_nm:
-            return await ctx.send(
-                embed=discord.Embed(
-                    title="학년과 반 정보를 입력해주세요!", colour=discord.Colour.red()
+                return await ctx.send(
+                    embed=discord.Embed(title="잘못된 형식입니다.", colour=discord.Colour.red())
                 )
-            )
         user_data = await db.get_user_data(ctx.author.id)
         if user_data and not school_name:
             msg = await ctx.send(
@@ -47,10 +38,8 @@ class TimeTable(commands.Cog):
             )
             AE = user_data["neis_ae"]
             SE = user_data["neis_se"]
-            if not grade:
-                grade = user_data["grade"]
-            if not class_nm:
-                class_nm = user_data["class_nm"]
+            grade = user_data["grade"]
+            class_nm = user_data["class_nm"]
             scclass = user_data["class"]
             if scclass != "his":
                 try:
@@ -97,6 +86,12 @@ class TimeTable(commands.Cog):
 
         else:
             if school_name:
+                if not grade or not class_nm:
+                    return await ctx.send(
+                        embed=discord.Embed(
+                            title="학년과 반 정보를 입력해주세요!", colour=discord.Colour.red()
+                        )
+                    )
                 msg = await ctx.send(
                     embed=discord.Embed(
                         title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
