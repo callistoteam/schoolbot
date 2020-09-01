@@ -24,7 +24,7 @@ class TimeTable(commands.Cog):
     ):
         user_data = await db.get_user_data(ctx.author.id)
         if user_data:
-            if not school_name and school_name.isdigit() and not grade:
+            if school_name and school_name.isdigit() and not grade:
                 if len(school_name) == 8:
                     date = school_name
                 else:
