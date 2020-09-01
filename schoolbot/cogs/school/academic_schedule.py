@@ -54,9 +54,7 @@ class AcademicSchedule(commands.Cog):
         else:
             if school_name:
                 try:
-                    scinfo = await self.neis.schoolInfo(
-                        SCHUL_NM=school_name, rawdata=True
-                    )
+                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name)
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(

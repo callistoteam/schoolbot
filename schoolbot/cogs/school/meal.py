@@ -56,8 +56,7 @@ class Meal(commands.Cog):
             meal_day = str(scmeal[0].MLSV_YMD)
             await msg.edit(
                 embed=discord.Embed(
-                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.",
-                    colour=0x2E3136,
+                    title=f"{scmeal[0].SCHUL_NM}의 급식입니다.", colour=0x2E3136,
                 ).add_field(
                     name=f"{meal_day[0:4]}년 {meal_day[4:6]}월 {meal_day[6:8]}일",
                     value=scmeal[0].DDISH_NM.replace("<br/>", "\n"),
@@ -71,9 +70,7 @@ class Meal(commands.Cog):
                     )
                 )
                 try:
-                    scinfo = await self.neis.schoolInfo(
-                        SCHUL_NM=school_name, rawdata=True
-                    )
+                    scinfo = await self.neis.schoolInfo(SCHUL_NM=school_name)
                 except DataNotFound:
                     return await msg.edit(
                         embed=discord.Embed(
