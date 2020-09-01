@@ -22,15 +22,17 @@ class TimeTable(commands.Cog):
         class_nm: int = None,
         date: int = None,
     ):
-        if school_name.isdigit() and not grade:
-            if len(school_name) == 8:
-                date = school_name
-            else:
-                return await ctx.send(
-                    embed=discord.Embed(title="잘못된 형식입니다.", colour=discord.Colour.red())
-                )
         user_data = await db.get_user_data(ctx.author.id)
-        if user_data and not school_name:
+        if user_data:
+            if not school_name and school_name.isdigit() and not grade:
+                if len(school_name) == 8:
+                    date = school_name
+                else:
+                    return await ctx.send(
+                        embed=discord.Embed(
+                            title="잘못된 형식입니다.", colour=discord.Colour.red()
+                        )
+                    )
             msg = await ctx.send(
                 embed=discord.Embed(
                     title="정보를 요청합니다 잠시만 기다려주세요.", colour=discord.Colour.blurple()
