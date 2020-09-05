@@ -126,9 +126,15 @@ class Article(commands.Cog):
                 if scarticles[position].images:
                     embed.set_image(url=scarticles[position].images[0])
                 await msg.edit(embed=embed)
-                self.bot.loop.create_task(
-                    asyncio.wait([msg.add_reaction(emoji) for emoji in ["◀", "⏹", "▶"]])
-                )
+                
+                async def _add_emojis():
+                    try:
+                        for emoji in ["◀", "⏹", "▶"]:
+                            await msg.add_reaction(emoji)
+                    except:
+                        pass
+                
+                self.bot.loop.create_task(_add_emojis())
                 while not self.bot.is_closed():
                     try:
                         reaction, user = await self.bot.wait_for(
