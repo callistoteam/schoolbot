@@ -13,23 +13,21 @@ class Setting(commands.Cog):
     @commands.command(name="설정")
     async def _setting(self, ctx, key: str = None, *, value: str = None):
         if key and value:
-            args = " ".join(value.split("|")).split()
+            args = re.split(r"||\s", value)
             if key == "학교":
+                if len(args) < 5:  # I'm sad because of hardcoding...
+                    return await ctx.send(embed=discord.Embed(title="올바른 정보를 입력해주세요"))
                 if args[3].isdigit() and args[4].isdigit():
-                    grade = int(args[3])
-                    class_nm = int(args[4])
-                    user_data = await db.get_user_data(ctx.author.id)
-
                     Query = {
                         "id": ctx.author.id,
                         "neis_ae": args[0],
                         "neis_se": args[1],
-                        "grade": grade,
-                        "class_nm": class_nm,
+                        "grade": int(args[3]),
+                        "class_nm": int(args[4]),
                         "class": args[2],
                     }
 
-                    if user_data:
+                    if await db.get_user_data(ctx.author.id):
                         await db.update_school(**Query)
                     else:
                         await db.create_user_data(**Query)
