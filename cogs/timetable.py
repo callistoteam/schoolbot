@@ -1,12 +1,11 @@
 import re
+from datetime import datetime
 
 import discord
+import neispy
 from discord.ext import commands
 
-import neispy
 from database import User
-
-from datetime import datetime
 
 SCHUL_KND_SC_NM = {"초등학교": "els", "중학교": "mis", "고등학교": "his", "특수학교": "sps"}
 

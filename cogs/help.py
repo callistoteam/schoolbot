@@ -10,7 +10,7 @@ class Help(commands.Cog):
     async def _help(self, ctx):
         embed = discord.Embed(title="도움말", description="접두사: ``?``")
 
-        for Command in self.Bot.commands:
+        for Command in [i for i in self.Bot.commands if i.help]:
             embed.add_field(
                 name=Command.name,
                 value=Command.help,

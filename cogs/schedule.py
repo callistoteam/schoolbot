@@ -1,9 +1,9 @@
-from sched import scheduler
-import discord
-from discord.ext import commands
 from datetime import datetime
 
+import discord
 import neispy
+from discord.ext import commands
+
 from database import User
 
 

@@ -1,4 +1,5 @@
 import re
+
 import discord
 from discord.ext import commands
 
@@ -41,6 +42,14 @@ class Setting(commands.Cog):
 
     @commands.command(name="설정")
     async def _setting(self, ctx, key: str, *, value: str):
+        """
+        설명:학교 정보와 공개 여부를 설정합니다.
+        인자값: 키(필수) 값(필수)
+        예시:
+        ?설정 학교 E10|7310100 1 1
+        ?설정 공개 아니요
+        """
+
         if key == "학교":  # F10|7401249|mis <학년> <반>
             Value = re.match(
                 r"(B10|C10|D10|E10|F10|G10|H10|I10|J10|K10|M10|N10|P10|Q10|R10|S10|T10|V10)\|([0-9]{7})\|(els|mis|hls)\s([0-9]{1})\s([0-9]{1,2})",

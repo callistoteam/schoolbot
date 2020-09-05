@@ -1,16 +1,16 @@
 import asyncio
+import logging
 import os
 from typing import Callable
 
-import neispy
-
 import discord
+import neispy
 from discord.ext import commands
 
 import cogs
 import database
 
-os.environ["MEAL_API_KEY"] = "youshallnotpass"
+logging.basicConfig(level=logging.INFO)
 
 
 class Bot(commands.Bot):

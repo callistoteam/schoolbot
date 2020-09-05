@@ -1,8 +1,7 @@
-from inspect import trace
+import logging
 import os
 import re
 import traceback
-import logging
 
 log = logging.getLogger("schoolbot.cogs")
 

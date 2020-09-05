@@ -1,7 +1,7 @@
-import discord
-from discord.ext import commands
 from datetime import datetime
 
+import discord
+from discord.ext import commands
 
 SCHUL_KND_SC_NM = {"초등학교": "els", "중학교": "mis", "고등학교": "his", "특수학교": "sps"}
 

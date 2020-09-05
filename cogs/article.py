@@ -1,15 +1,15 @@
 import asyncio
 from datetime import datetime
 
-import iamschool
-from iamschool import HTTPException
 import discord
+import iamschool
 from discord.ext import commands
+from iamschool import HTTPException
 
 from database import User
 
 
-class Article(commands.Cog):  # 이거 내가 못건듬
+class Article(commands.Cog):
     def __init__(self, Bot):
         self.Bot = Bot
         self.client = iamschool.AsyncClient()
