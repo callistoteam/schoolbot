@@ -13,7 +13,7 @@ class Setting(commands.Cog):
     @commands.command(name="설정")
     async def _setting(self, ctx, key: str = None, *, value: str = None):
         if key and value:
-            args = re.split(r"\||\s", value)
+            args = " ".join(value.split("|")).split()
             if key == "학교":
                 if args[3].isdigit() and args[4].isdigit():
                     grade = int(args[3])
