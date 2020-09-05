@@ -1,5 +1,6 @@
 import asyncio
 import os
+from typing import Callable
 
 import neispy
 from neispy import DataNotFound
@@ -14,6 +15,8 @@ os.environ["MEAL_API_KEY"] = "youshallnotpass"
 
 
 class Bot(commands.Bot):
+    __version__ = "1.0.0"
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -23,7 +26,46 @@ class Bot(commands.Bot):
 
         self.loop.create_task(database.init())
 
-    __version__ = "1.0.0"
+    async def pagination(self, ctx, callback: Callable, limit: int):
+        position = 0
+
+        message = await ctx.send(embed=callback(position))
+
+        async def _add_emojis():
+            try:
+                for emoji in ["◀", "⏹", "▶"]:
+                    await message.add_reaction(emoji)
+            except:
+                pass
+
+        self.loop.create_task(_add_emojis())
+
+        while not self.is_closed():
+            try:
+                reaction, user = await self.wait_for(
+                    "reaction_add",
+                    check=lambda reaction, user: user == ctx.author
+                    and reaction.message.id == message.id
+                    and reaction.emoji in ["◀", "⏹", "▶"],
+                    timeout=30,
+                )
+            except asyncio.TimeoutError:
+                await message.clear_reactions()
+                break
+
+            if reaction.emoji == "◀" and position > 0:
+                position -= 1
+            elif reaction.emoji == "⏹":
+                try:
+                    await message.clear_reactions()
+                except:
+                    pass
+                break
+            elif reaction.emoji == "▶" and position < limit:
+                position += 1
+
+            await message.edit(embed=callback(position))
+            await message.remove_reaction(reaction.emoji, user)
 
     async def search_school(self, ctx, query: str) -> dict:
         try:
