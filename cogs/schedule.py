@@ -51,7 +51,7 @@ class Schedule(commands.Cog):
             )
         else:
             schedule = schedule[0]
-        print(schedule)
+
         await ctx.send(
             embed=discord.Embed(
                 title=f"{schedule.SCHUL_NM}의 학사일정입니다",
