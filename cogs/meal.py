@@ -19,8 +19,8 @@ class Meal(commands.Cog):
             async with session.post(
                 f"https://api.schoolbot.callisto.team/render/?meal={meals}",
                 headers={"Authorization": os.environ["MEAL_API_KEY"]},
-            ) as response:
-                return (await response.json())["url"]
+            ) as res:
+                return (await res.json())["url"]
 
     @commands.command(name="급식")
     async def _meal(self, ctx, schoolname: str = None, date: str = neispy.now()):

@@ -23,6 +23,8 @@ class Bot(commands.Bot):
 
         self.loop.create_task(database.init())
 
+    __version__ = "1.0.0"
+
     async def search_school(self, ctx, query: str) -> dict:
         try:
             Data = await self.neis.schoolInfo(SCHUL_NM=query)
@@ -45,7 +47,7 @@ class Bot(commands.Bot):
         message = await ctx.send(
             embed=discord.Embed(
                 title="여러개의 검색 결과입니다.",
-                description="".join(school_list),
+                description="\n".join(school_list),
                 colur=discord.Colour.blurple(),
             )
         )
@@ -63,6 +65,8 @@ class Bot(commands.Bot):
                 )
             )
             return
+
+        await message.delete()
 
         if not response.content.isdigit():
             await message.edit(

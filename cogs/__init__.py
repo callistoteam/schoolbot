@@ -15,7 +15,7 @@ def load(Bot):
     for Extension in [
         "cogs." + re.sub(".py", "", File)
         for File in os.listdir(Directory)
-        if not File.startswith("__init__")
+        if not "__" in File
     ]:
         try:
             Bot.load_extension(Extension)
