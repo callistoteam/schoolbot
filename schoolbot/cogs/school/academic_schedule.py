@@ -134,6 +134,6 @@ class AcademicSchedule(commands.Cog):
                     colour=0x2E3136,
                 ).add_field(
                     name=f"**{scacca[0].EVENT_NM}**",
-                    value=f"{scacca[0].CNTNT if scacca[0].CNTNT else '해당 학사일정의 내용이 없습니다.'}",
+                    value=f"{scacca[0].EVENT_CNTNT if scacca[0].EVENT_CNTNT else '해당 학사일정의 내용이 없습니다.'}",
                 )
             )
