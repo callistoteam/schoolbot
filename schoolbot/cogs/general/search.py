@@ -79,7 +79,7 @@ class Search(commands.Cog):
         else:
             raise ValueError
 
-        embed = discord.Embed(title="검색 정보", description="")
+        embed = discord.Embed(title="검색 정보")
         embed.add_field(
             name=scinfo[0].ORG_RDNMA, value=scinfo[0].SCHUL_NM, inline=False
         )

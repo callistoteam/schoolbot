@@ -1,10 +1,8 @@
 import datetime
 
 
-def korean_date():
-    KST = datetime.timezone(datetime.timedelta(hours=9))
-    return datetime.datetime.now(tz=KST)
+KST = datetime.timezone(datetime.timedelta(hours=9))
 
 
 def kst_sft():
-    return korean_date().strftime("%Y-%m-%d %H:%M:%S (%Z)")
+    return datetime.datetime.now(tz=KST)
