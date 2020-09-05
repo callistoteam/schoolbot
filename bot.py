@@ -3,7 +3,6 @@ import os
 from typing import Callable
 
 import neispy
-from neispy import DataNotFound
 
 import discord
 from discord.ext import commands
@@ -20,9 +19,10 @@ class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.neis = neispy.Client()  # os.environ["API_KEY"])
+        self.neis = neispy.Client(os.environ["API_KEY"])
 
         cogs.load(self)
+        self.load_extension("jishaku")
 
         self.loop.create_task(database.init())
 
