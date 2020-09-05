@@ -4,5 +4,5 @@ import datetime
 KST = datetime.timezone(datetime.timedelta(hours=9))
 
 
-def korean_date():
+def kst_sft():
     return datetime.datetime.now(tz=KST)
