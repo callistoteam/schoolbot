@@ -19,14 +19,20 @@ class Setting(commands.Cog):
                     grade = int(args[3])
                     class_nm = int(args[4])
                     user_data = await db.get_user_data(ctx.author.id)
+
+                    Query = {
+                        "id": ctx.author.id,
+                        "neis_ae": args[0],
+                        "neis_se": args[1],
+                        "grade": grade,
+                        "class_nm": class_nm,
+                        "class": args[2],
+                    }
+
                     if user_data:
-                        await db.update_school(
-                            ctx.author.id, args[0], args[1], grade, class_nm, args[2]
-                        )
+                        await db.update_school(**Query)
                     else:
-                        await db.create_user_data(
-                            ctx.author.id, args[0], args[1], grade, class_nm, args[2]
-                        )
+                        await db.create_user_data(**Query)
                     return await ctx.send(embed=discord.Embed(title="학교 정보가 설정되었습니다."))
                 else:
                     return await ctx.send(
@@ -65,6 +71,9 @@ class Setting(commands.Cog):
                         "비공개",
                     ]:
                         public = 0
+                    else:
+                        raise ValueError
+
                     await db.change_public(ctx.author.id, public)
                     return await ctx.send(
                         embed=discord.Embed(title="학교 공개 여부가 설정되었습니다.")
