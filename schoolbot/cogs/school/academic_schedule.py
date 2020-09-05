@@ -62,7 +62,7 @@ class AcademicSchedule(commands.Cog):
                             colour=discord.Colour.red(),
                         )
                     )
-                if len(scinfo.data) > 1:
+                if len(scinfo) > 1:
                     school_name_list = [school_name.SCHUL_NM for school_name in scinfo]
                     school_name_list_with_num = [
                         str(index) + ". " + school_names
@@ -92,7 +92,7 @@ class AcademicSchedule(commands.Cog):
                         )
                     else:
                         if response.content.isdigit():
-                            num = response.content - 1
+                            num = int(response.content) - 1
                         else:
                             return await msg.edit(
                                 embed=discord.Embed(
