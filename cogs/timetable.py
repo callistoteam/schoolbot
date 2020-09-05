@@ -24,6 +24,14 @@ class TimeTable(commands.Cog):
         c: str = None,
         d: str = neispy.now(),
     ):
+        """
+        설명:해당학교의 시간표를 알려줍니다. 날짜가 주어지지 않았을경우 현재 날짜로 가져옵니다. 현재 고등학교는 가져올수 없습니다.
+        인자값: 학교명(미설정시 필수) 학년(미설정시 필수) 반(미설정시 필수) 날짜(선택)
+        예시:
+        ?시간표 구월중학교 2 1
+        ?시간표 구월중학교 2 1 20200810
+        """
+
         schoolname = grade = class_ = date = None
         for Data in [Item for Item in [a, b, c, d] if Item]:
             if not schoolname and re.fullmatch("[가-힣]+", Data):

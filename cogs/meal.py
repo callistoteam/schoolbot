@@ -24,6 +24,14 @@ class Meal(commands.Cog):
 
     @commands.command(name="급식")
     async def _meal(self, ctx, schoolname: str = None, date: str = neispy.now()):
+        """
+        설명:해당학교의 급식정보를 알려줍니다. 날짜가 주어지지 않았을경우 현재 날짜로 가져옵니다.
+        인자값: 학교명(미설정시 필수) 날짜(선택)
+        예시:
+        ?급식 인천기계공업고등학교
+        ?급식 인천기계공업고등학교 20200810
+        """
+
         if schoolname and schoolname.isdigit():
             schoolname, date = None, schoolname
 
