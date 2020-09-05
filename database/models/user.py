@@ -3,17 +3,21 @@ from tortoise import models, fields
 
 class User(models.Model):
     id = fields.BigIntField(pk=True, description="discord user id")
-    neis_ae = fields.CharField(max_length=3, description="neis education office code")
-    neis_se = fields.CharField(max_length=3, description="neis school code")
-    school_type = fields.CharField(max_length=3, description="user school type")
+    neis_ae = fields.CharField(
+        max_length=3, description="neis education office code", null=True
+    )
+    neis_se = fields.CharField(max_length=7, description="neis school code", null=True)
+    school_type = fields.CharField(
+        max_length=3, description="user school type", null=True
+    )
     iamschool = fields.CharField(
         max_length=5, default="0", description="iamschool school code"
     )
     public = fields.BooleanField(
         default=True, description="whether make data public or not"
     )
-    grade = fields.IntField(description="user school grade")
-    class_ = fields.IntField(description="user school class")
+    grade = fields.IntField(description="user school grade", null=True)
+    class_ = fields.IntField(description="user school class", null=True)
 
     class Meta:
         table = "users"
