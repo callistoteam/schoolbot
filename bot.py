@@ -1,6 +1,7 @@
 import os
 import cogs
 from discord.ext import commands
+import database
 
 
 class Bot(commands.Bot):
@@ -8,6 +9,8 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
 
         cogs.load(self)
+
+        self.loop.create_task(database.init())
 
 
 if __name__ == "__main__":

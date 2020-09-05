@@ -1,14 +1,12 @@
-# import os
-# import sys
+import os
+import sys
 
-# from discord.ext.commands import Bot as Core
+from discord.ext.commands import Bot
 
-# import schoolbot.bot as main
+sys.path.append(os.path.abspath("./"))
 
-# sys.path.append(os.path.abspath("schoolbot"))
+import cogs
 
 
-# def test_load():
-#     bot = Core("", help_command=None)
-#     failed = main.load_cogs(bot)
-#     assert len(failed) == 0
+def test_load():
+    assert len(cogs.load(Bot("", help_command=None))) == 0
