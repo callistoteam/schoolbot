@@ -20,8 +20,8 @@ def embed_to_text(embed):
                     (
                         "> "
                         + re.sub(
-                            "\[(.*?)\]\((.*?)\)",
-                            "\g<1>: \g<2>",
+                            r"\[(.*?)\]\((.*?)\)",
+                            r"\g<1>: \g<2>",
                             field.value,
                         ).replace("\n", "\n> ")
                     )
