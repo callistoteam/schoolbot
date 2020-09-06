@@ -8,6 +8,7 @@ import neispy
 from discord.ext import commands
 
 from database import User
+from utils import is_mobile
 
 
 class Meal(commands.Cog):
@@ -48,7 +49,8 @@ class Meal(commands.Cog):
                 return await ctx.send(
                     embed=discord.Embed(
                         title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
-                    )
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
             AE, SE = Data.neis_ae, Data.neis_se
@@ -59,7 +61,8 @@ class Meal(commands.Cog):
             return await ctx.send(
                 embed=discord.Embed(
                     title="해당하는 날짜에 급식이 없는거 같습니다.", colur=discord.Colour.red()
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
         else:
             meal = meal[0]
@@ -71,11 +74,11 @@ class Meal(commands.Cog):
             value=meal.DDISH_NM.replace("<br/>", "\n"),
         )
 
-        message = await ctx.send(embed=embed)
+        message = await ctx.send(embed=embed, mobile=is_mobile(ctx.author))
 
         embed.set_image(url=await self.__get_meal_image(meal.DDISH_NM))
 
-        await message.edit(embed=embed)
+        await message.edit(embed=embed, mobile=is_mobile(ctx.author))
 
 
 def setup(Bot):

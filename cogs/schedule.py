@@ -5,6 +5,7 @@ import neispy
 from discord.ext import commands
 
 from database import User
+from utils import is_mobile
 
 
 class Schedule(commands.Cog):
@@ -36,7 +37,8 @@ class Schedule(commands.Cog):
                 return await ctx.send(
                     embed=discord.Embed(
                         title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
-                    )
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
             AE, SE = Data.neis_ae, Data.neis_se
@@ -47,7 +49,8 @@ class Schedule(commands.Cog):
             return await ctx.send(
                 embed=discord.Embed(
                     title="정보가 없습니다. 확인하신 후 다시 요청하세요.", colur=discord.Colour.red()
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
         else:
             schedule = schedule[0]
@@ -62,7 +65,8 @@ class Schedule(commands.Cog):
             ).add_field(
                 name=f"**{schedule.EVENT_NM}**",
                 value=f"{schedule.EVENT_CNTNT if schedule.EVENT_CNTNT else '해당 학사일정의 내용이 없습니다.'}",
-            )
+            ),
+            mobile=is_mobile(ctx.author),
         )
 
 
