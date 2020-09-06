@@ -2,9 +2,6 @@ import discord
 
 
 def embed_to_text(embed):
-    print(
-        f"\n> {embed.description if embed.description != discord.Embed.Empty else ''}\n\n"
-    )
     return (
         f"**{embed.title}**\n"
         + ((embed.url + "\n") if embed.url != discord.Embed.Empty else "")
