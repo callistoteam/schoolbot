@@ -1,8 +1,9 @@
+import json
 import logging
 import os
-from .model import RandomText
 import traceback
-import json
+
+from .model import RandomText
 
 log = logging.getLogger("schoolbot.randomtext")
 

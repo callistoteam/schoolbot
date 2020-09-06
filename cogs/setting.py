@@ -53,7 +53,7 @@ class Setting(commands.Cog):
 
         if key == "학교":  # F10|7401249|mis <학년> <반>
             Value = re.match(
-                r"(B10|C10|D10|E10|F10|G10|H10|I10|J10|K10|M10|N10|P10|Q10|R10|S10|T10|V10)\|([0-9]{7})\|(els|mis|hls)\s([0-9]{1})\s([0-9]{1,2})",
+                r"(B10|C10|D10|E10|F10|G10|H10|I10|J10|K10|M10|N10|P10|Q10|R10|S10|T10|V10)\|([0-9]{7})\|(els|mis|his|sps)\s([0-9]{1})\s([0-9]{1,2})",
                 value,
                 flags=re.I,
             )
