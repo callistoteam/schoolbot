@@ -15,7 +15,18 @@ def embed_to_text(embed):
         + "\n\n".join(
             [
                 f"**{field.name}**\n"
-                + (("> " + re.sub('\[(.*?)\]\((.*?)\)', '\g<1>: \g<2>', field.value.replace("\n", "\n> "))) if field.value else "")
+                + (
+                    (
+                        "> "
+                        + re.sub(
+                            "\[(.*?)\]\((.*?)\)",
+                            "\g<1>: \g<2>",
+                            field.value.replace("\n", "\n> "),
+                        )
+                    )
+                    if field.value
+                    else ""
+                )
                 for field in embed.fields
                 if field != discord.Embed.Empty
             ]
