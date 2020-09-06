@@ -26,7 +26,13 @@ def embed_to_text(embed):
             else ""
         )
         + (
-            (" · " + embed.timestamp.strftime("%p %H:%M"))
+            " · "
+            if embed.footer != discord.Embed.Empty
+            and embed.timestamp != discord.Embed.Empty
+            else ""
+        )
+        + (
+            embed.timestamp.strftime("%p %H:%M")
             if embed.timestamp != discord.Embed.Empty
             else ""
         )
