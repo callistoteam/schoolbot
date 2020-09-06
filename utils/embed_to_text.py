@@ -8,7 +8,8 @@ def embed_to_text(embed):
         + f"\n> {embed.description if embed.description != discord.Embed.Empty else ''}\n\n"
         + "\n\n".join(
             [
-                f"**{field.name}**\n" + "> " + field.value.replace("\n", "\n> ")
+                f"**{field.name}**\n"
+                + (("> " + field.value.replace("\n", "\n> ")) if field.value else "")
                 for field in embed.fields
                 if field != discord.Embed.Empty
             ]
