@@ -34,9 +34,6 @@ class Bot(commands.Bot):
 
         async def send(self, content=None, **kwargs):
             if "embed" in kwargs and kwargs.get("mobile", True):
-                if "mobile" in kwargs:
-                    del kwargs["mobile"]
-
                 if not content:
                     content = ""
 
@@ -44,6 +41,9 @@ class Bot(commands.Bot):
                 if kwargs["embed"].image.url != discord.Embed.Empty:
                     content += "\n" * 2 + kwargs["embed"].image.url
                 del kwargs["embed"]
+
+            if "mobile" in kwargs:
+                del kwargs["mobile"]
 
             return await send_method(self, content, **kwargs)
 
@@ -53,9 +53,6 @@ class Bot(commands.Bot):
 
         async def edit(self, **kwargs):
             if "embed" in kwargs and kwargs.get("mobile", True):
-                if "mobile" in kwargs:
-                    del kwargs["mobile"]
-
                 if not "content" in kwargs:
                     kwargs["content"] = ""
 
@@ -70,6 +67,9 @@ class Bot(commands.Bot):
                                 )
                             )
                 del kwargs["embed"]
+
+            if "mobile" in kwargs:
+                del kwargs["mobile"]
 
             return await edit_method(self, **kwargs)
 
