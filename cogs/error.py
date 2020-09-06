@@ -1,10 +1,8 @@
 import os
 import traceback
 import uuid
+from datetime import datetime
 
-
-import schoolbot
-from utils.kst import kst_sft
 import discord
 from discord.ext import commands
 
@@ -29,7 +27,7 @@ class Error(commands.Cog):
                 delete_after=5,
             )
         elif isinstance(error, commands.NotOwner):
-            await ctx.send("관리자만 사용하실수있는 명령어입니다.", delete_after=5)
+            await ctx.send("관리자만 사용가능한 명령어입니다.", delete_after=5)
         else:
             trace_uuid = str(uuid.uuid4())
             await ctx.send(
@@ -42,14 +40,14 @@ class Error(commands.Cog):
 
             trace_embed = discord.Embed(
                 title=f"Unexpected Error in schoolbot\n**UUID**: ``{trace_uuid}``",
-                description=f"**Version**: ``{schoolbot.__version__}``\n"
+                description=f"**Version**: ``{self.bot.__version__}``\n"
                 f"**User**: ``{ctx.author}`` (``{ctx.author.id}``)\n"
                 f"**Guild**: ``{ctx.author.guild}`` (``{ctx.author.guild.id}``)\n"
                 f"**Channel**: ``{ctx.channel}`` (``{ctx.channel.id}``)\n"
                 f"**Command**: ``{ctx.command}``\n"
                 f"**Bot Permission**: ``{ctx.guild.me.guild_permissions.value}``",
+                timestamp=datetime.utcnow(),
             )
-            trace_embed.set_footer(text=kst_sft())
             if not error.__cause__:
                 trace_embed.add_field(
                     name="Traceback:",
@@ -62,3 +60,7 @@ class Error(commands.Cog):
                 )
             channel = await self.bot.fetch_channel(os.environ["channel_id"])
             await channel.send(embed=trace_embed)
+
+
+def setup(bot):
+    bot.add_cog(Error(bot))
