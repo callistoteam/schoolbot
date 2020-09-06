@@ -58,6 +58,7 @@ class Error(commands.Cog):
                     name="Traceback:",
                     value=f"```py\n{''.join(traceback.format_exception(type(error.__cause__), error.__cause__, error.__cause__.__traceback__, limit=3))}\n```",
                 )
+
             channel = await self.bot.fetch_channel(os.environ["channel_id"])
             await channel.send(embed=trace_embed)
 
