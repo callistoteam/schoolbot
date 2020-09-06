@@ -45,6 +45,23 @@ class Bot(commands.Bot):
 
         discord.abc.Messageable.send = send
 
+        edit_method = discord.Message.edit
+
+        async def edit(self, **kwargs):
+            if "embed" in kwargs and kwargs.get("mobile", True):
+                if "mobile" in kwargs:
+                    del kwargs["mobile"]
+
+                if not "content" in kwargs:
+                    kwargs["content"] = ""
+
+                kwargs["content"] += "\n" * 2 + utils.embed_to_text(kwargs["embed"])
+                del kwargs["embed"]
+
+            return await edit_method(self, **kwargs)
+
+        discord.Message.edit = edit
+
 
 if __name__ == "__main__":
     Bot(command_prefix="?", help_command=None).run(os.environ["TOKEN"])
