@@ -29,13 +29,13 @@ class User(models.Model):
     def __repr__(self):
         return (
             f"<User"
-            f"id={self.id}"
-            f"neis_ae={self.neis_ae}"
-            f"neis_se={self.neis_se}"
-            f"school_type={self.school_type}"
-            f"iamschool={self.iamschool}"
-            f"public={self.public}"
-            f"grade={self.grade}"
-            f"class={self.class_}"
-            ">"
+            + f" id={self.id}"
+            + f" neis_ae={self.neis_ae}"
+            + f" neis_se={self.neis_se}"
+            + f" school_type={self.school_type}"
+            + f" iamschool={self.iamschool}"
+            + f" public={self.public}"
+            + f" grade={self.grade}"
+            + f" class={self.class_}"
+            + ">"
         )
