@@ -1,7 +1,7 @@
-import logging
-
 import io
+import logging
 import os
+
 import aiohttp
 import discord
 import neispy
