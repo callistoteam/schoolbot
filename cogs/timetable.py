@@ -95,7 +95,11 @@ class TimeTable(commands.Cog):
                 CLASS_NM=class_,
             )
         except neispy.DataNotFound:
-            return await ctx.send("데이터 없음", mobile=is_mobile(ctx.author))
+            return await ctx.send(
+                datetime.strptime(date, "%Y%m%d").strftime("%m월 %d일")
+                + "의 시간표 정보를 찾을 수 없습니다.",
+                mobile=is_mobile(ctx.author),
+            )
 
         await ctx.send(
             embed=discord.Embed(

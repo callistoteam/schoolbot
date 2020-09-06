@@ -65,6 +65,7 @@ class Utils:
 
         if len(Data) == 1:
             return Data[0]
+        Data = Data[:10]
 
         school_list = [
             f"{index}. {school.SCHUL_NM} ({school.LCTN_SC_NM})"

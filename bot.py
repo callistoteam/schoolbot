@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Bot(commands.Bot):
-    __version__ = "1.1.0"
+    __version__ = "1.1.1"
 
     def __init__(self, *args, **kwargs):
         self.initialize_autoembed()

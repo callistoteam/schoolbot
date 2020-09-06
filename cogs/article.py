@@ -30,7 +30,7 @@ class Article(commands.Cog):
             except HTTPException:
                 return await ctx.send(
                     embed=discord.Embed(
-                        title="HTTP 요청 오류입니다",
+                        title="일시적인 오류입니다, 잠시 후 다시시도해주세요.",
                         colour=discord.Colour.red(),
                     ),
                     mobile=is_mobile(ctx.author),
@@ -72,7 +72,7 @@ class Article(commands.Cog):
                 except asyncio.TimeoutError:
                     return await message.edit(
                         embed=discord.Embed(
-                            title="시간 초과 입니다. 처음부터 다시 시도 해주세요.",
+                            title="명령어 시간 초과입니다. 처음부터 다시 시도해주세요.",
                             colur=discord.Colour.red(),
                         ),
                         mobile=is_mobile(ctx.author),
@@ -83,7 +83,7 @@ class Article(commands.Cog):
                 if not response.content.isdigit():
                     return await message.edit(
                         embed=discord.Embed(
-                            title="잘못된 값을 받았습니다. 확인 후 다시 시도 해주세요.",
+                            title="정수만 입력 가능합니다. 확인 후 다시 시도 해주세요.",
                             colur=discord.Colour.red(),
                         ),
                         mobile=is_mobile(ctx.author),
@@ -108,7 +108,7 @@ class Article(commands.Cog):
         except HTTPException:
             return await ctx.send(
                 embed=discord.Embed(
-                    title="HTTP 요청 오류입니다",
+                    title="일시적인 오류입니다, 잠시 후 다시시도해주세요.",
                     colour=discord.Colour.red(),
                 ),
                 mobile=is_mobile(ctx.author),

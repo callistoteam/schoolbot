@@ -59,9 +59,8 @@ class Meal(commands.Cog):
             meal = await self.Bot.neis.mealServiceDietInfo(AE, SE, MLSV_YMD=date)
         except neispy.DataNotFound:
             return await ctx.send(
-                embed=discord.Embed(
-                    title="해당하는 날짜에 급식이 없는거 같습니다.", colur=discord.Colour.red()
-                ),
+                datetime.strptime(date, "%Y%m%d").strftime("%m월 %d일")
+                + "의 급식 정보를 찾을 수 없습니다.",
                 mobile=is_mobile(ctx.author),
             )
         else:

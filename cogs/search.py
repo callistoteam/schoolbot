@@ -23,9 +23,7 @@ class Search(commands.Cog):
 
         if not schoolname:
             return await ctx.send(
-                embed=discord.Embed(
-                    title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
-                ),
+                embed=discord.Embed(title="학교명을 입력해 주세요.", colur=discord.Colour.red()),
                 mobile=is_mobile(ctx.author),
             )
 
