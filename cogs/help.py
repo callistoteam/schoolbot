@@ -15,12 +15,12 @@ class Help(commands.Cog):
                 name=Command.name,
                 value=Command.help,
                 inline=False,
-            ).add_field(
-                name="유용한 링크",
-                value="[이용약관](https://callisto.team/tos)\n[개인정보취급방침](https://callisto.team/privacy)",
-                inline=False,
             )
-
+        embed.add_field(
+            name="유용한 링크",
+            value="[이용약관](https://callisto.team/tos)\n[개인정보취급방침](https://callisto.team/privacy)",
+            inline=False,
+        )
         await ctx.send(embed=embed)
 
 
