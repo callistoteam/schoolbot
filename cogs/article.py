@@ -7,6 +7,7 @@ from discord.ext import commands
 from iamschool import HTTPException
 
 from database import User
+from utils import is_mobile
 
 
 class Article(commands.Cog):
@@ -14,7 +15,7 @@ class Article(commands.Cog):
         self.Bot = Bot
         self.client = iamschool.AsyncClient()
 
-    @commands.command(name="게시물")
+    @commands.command(name="게시물", aliases=["게시물", "게시판"])
     async def _article(self, ctx, schoolname: str = None):
         """
         설명:해당학교의 아이엠스쿨 게시물을 가져옵니다.
@@ -31,7 +32,8 @@ class Article(commands.Cog):
                     embed=discord.Embed(
                         title="HTTP 요청 오류입니다",
                         colour=discord.Colour.red(),
-                    )
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
             if not Data:
@@ -40,7 +42,8 @@ class Article(commands.Cog):
                         title="아이엠스쿨에 등록되지 않았습니다. 확인하신후 다시 요청하세요",
                         description=" [아이엠스쿨 바로가기](https://school.iamservice.net/) ",
                         colour=discord.Colour.red(),
-                    )
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
             if len(Data) == 1:
@@ -55,11 +58,12 @@ class Article(commands.Cog):
                         title="여러개의 검색 결과입니다.",
                         description="\n".join(school_list),
                         colur=discord.Colour.blurple(),
-                    )
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
                 try:
-                    response = await self.wait_for(
+                    response = await self.Bot.wait_for(
                         "message",
                         check=lambda m: m.author == ctx.author
                         and m.channel == message.channel,
@@ -70,7 +74,8 @@ class Article(commands.Cog):
                         embed=discord.Embed(
                             title="시간 초과 입니다. 처음부터 다시 시도 해주세요.",
                             colur=discord.Colour.red(),
-                        )
+                        ),
+                        mobile=is_mobile(ctx.author),
                     )
 
                 await message.delete()
@@ -80,7 +85,8 @@ class Article(commands.Cog):
                         embed=discord.Embed(
                             title="잘못된 값을 받았습니다. 확인 후 다시 시도 해주세요.",
                             colur=discord.Colour.red(),
-                        )
+                        ),
+                        mobile=is_mobile(ctx.author),
                     )
 
                 Data = Data[int(response.content) - 1]
@@ -90,8 +96,9 @@ class Article(commands.Cog):
             if not Data:
                 return await ctx.send(
                     embed=discord.Embed(
-                        title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
-                    )
+                        title="학교명을 입력해주세요.", colur=discord.Colour.red()
+                    ),
+                    mobile=is_mobile(ctx.author),
                 )
 
             school_id = Data.iamschool
@@ -103,7 +110,8 @@ class Article(commands.Cog):
                 embed=discord.Embed(
                     title="HTTP 요청 오류입니다",
                     colour=discord.Colour.red(),
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
 
         if not articles:
@@ -112,7 +120,8 @@ class Article(commands.Cog):
                     title="아이엠스쿨에 게시된 게시물이 없습니다.",
                     description=" [아이엠스쿨 바로가기](https://school.iamservice.net/)",
                     colour=discord.Colour.red(),
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
 
         def callback(position):

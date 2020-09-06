@@ -3,6 +3,8 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
+from utils import is_mobile
+
 SCHUL_KND_SC_NM = {"초등학교": "els", "중학교": "mis", "고등학교": "his", "특수학교": "sps"}
 
 
@@ -23,7 +25,8 @@ class Search(commands.Cog):
             return await ctx.send(
                 embed=discord.Embed(
                     title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
 
         School = await self.Bot.search_school(ctx, schoolname)
@@ -55,7 +58,8 @@ class Search(commands.Cog):
             .add_field(
                 name="검색된 정보가 일치한가요?",
                 value=f"`{self.Bot.command_prefix}설정 학교 {AE}|{SE}|{SCHOOL_TYPE} <학년> <반>`를 입력해서 학교를 설정할 수 있습니다!",
-            )
+            ),
+            mobile=is_mobile(ctx.author),
         )
 
 

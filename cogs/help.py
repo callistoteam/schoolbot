@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+from utils import is_mobile
+
 
 class Help(commands.Cog):
     def __init__(self, Bot):
@@ -21,7 +23,7 @@ class Help(commands.Cog):
             value="[이용약관](https://callisto.team/tos)\n[개인정보취급방침](https://callisto.team/privacy)",
             inline=False,
         )
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, mobile=is_mobile(ctx.author))
 
 
 def setup(Bot):

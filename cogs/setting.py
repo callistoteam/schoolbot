@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 from database import User
+from utils import is_mobile
 
 POSITIVE = [
     "네",
@@ -57,7 +58,10 @@ class Setting(commands.Cog):
                 flags=re.I,
             )
             if not Value:
-                return await ctx.send(embed=discord.Embed(title="올바른 정보를 입력해주세요"))
+                return await ctx.send(
+                    embed=discord.Embed(title="올바른 정보를 입력해주세요"),
+                    mobile=is_mobile(ctx.author),
+                )
 
             Data = (await User.get_or_create(id=ctx.author.id))[0]
             Data.neis_ae = Value.group(1)
@@ -68,25 +72,40 @@ class Setting(commands.Cog):
 
             await Data.save()
 
-            return await ctx.send(embed=discord.Embed(title="학교 정보가 설정되었습니다."))
+            return await ctx.send(
+                embed=discord.Embed(title="학교 정보가 설정되었습니다."),
+                mobile=is_mobile(ctx.author),
+            )
         if key == "공개":  # 공개|비공개
             Data = await User.get_or_none(id=ctx.author.id)
 
             if not Data:
-                return await ctx.send(embed=discord.Embed(title="학교를 먼저 설정해주세요!"))
+                return await ctx.send(
+                    embed=discord.Embed(title="학교를 먼저 설정해주세요!"),
+                    mobile=is_mobile(ctx.author),
+                )
 
             if value in POSITIVE:
                 Data.public = True
             elif value in NEGATIVE:
                 Data.public = False
             else:
-                return await ctx.send(embed=discord.Embed(title="올바른 정보를 입력해주세요"))
+                return await ctx.send(
+                    embed=discord.Embed(title="올바른 정보를 입력해주세요"),
+                    mobile=is_mobile(ctx.author),
+                )
 
             await Data.save()
 
-            return await ctx.send(embed=discord.Embed(title="학교 공개 여부가 설정되었습니다."))
+            return await ctx.send(
+                embed=discord.Embed(title="학교 공개 여부가 설정되었습니다."),
+                mobile=is_mobile(ctx.author),
+            )
         else:
-            return await ctx.send(embed=discord.Embed(title="설정할 수 없는 항목입니다."))
+            return await ctx.send(
+                embed=discord.Embed(title="설정할 수 없는 항목입니다."),
+                mobile=is_mobile(ctx.author),
+            )
 
 
 def setup(Bot):

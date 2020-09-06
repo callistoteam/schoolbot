@@ -1,9 +1,9 @@
 import asyncio
-import inspect
 from typing import Callable
 
 import discord
 import neispy
+from utils import is_mobile
 
 
 class Utils:
@@ -13,7 +13,7 @@ class Utils:
     async def pagination(self, ctx, callback: Callable, limit: int):
         position = 0
 
-        message = await ctx.send(embed=callback(position))
+        message = await ctx.send(embed=callback(position), mobile=is_mobile(ctx.author))
 
         async def _add_emojis():
             try:
@@ -48,7 +48,7 @@ class Utils:
             elif reaction.emoji == "▶" and position < limit:
                 position += 1
 
-            await message.edit(embed=callback(position))
+            await message.edit(embed=callback(position), mobile=is_mobile(ctx.author))
             await message.remove_reaction(reaction.emoji, user)
 
     async def search_school(self, ctx, query: str) -> dict:
@@ -75,7 +75,8 @@ class Utils:
                 title="여러개의 검색 결과입니다.",
                 description="\n".join(school_list),
                 colur=discord.Colour.blurple(),
-            )
+            ),
+            mobile=is_mobile(ctx.author),
         )
 
         try:
@@ -87,7 +88,9 @@ class Utils:
         except asyncio.TimeoutError:
             await message.edit(
                 embed=discord.Embed(
-                    title="시간 초과 입니다. 처음부터 다시 시도 해주세요.", colur=discord.Colour.red()
+                    title="시간 초과 입니다. 처음부터 다시 시도 해주세요.",
+                    colur=discord.Colour.red(),
+                    mobile=is_mobile(ctx.author),
                 )
             )
             return
@@ -97,7 +100,9 @@ class Utils:
         if not response.content.isdigit():
             await message.edit(
                 embed=discord.Embed(
-                    title="잘못된 값을 받았습니다. 확인 후 다시 시도 해주세요.", colur=discord.Colour.red()
+                    title="잘못된 값을 받았습니다. 확인 후 다시 시도 해주세요.",
+                    colur=discord.Colour.red(),
+                    mobile=is_mobile(ctx.author),
                 )
             )
             return
