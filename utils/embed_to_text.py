@@ -1,5 +1,6 @@
-import discord
 import re
+
+import discord
 
 
 def embed_to_text(embed):
