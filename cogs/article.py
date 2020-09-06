@@ -59,7 +59,7 @@ class Article(commands.Cog):
                 )
 
                 try:
-                    response = await self.wait_for(
+                    response = await self.Bot.wait_for(
                         "message",
                         check=lambda m: m.author == ctx.author
                         and m.channel == message.channel,
