@@ -6,6 +6,8 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
+from utils import is_mobile
+
 
 class Error(commands.Cog):
     def __init__(self, bot):
@@ -35,7 +37,8 @@ class Error(commands.Cog):
                     title="알 수 없는 오류가 발생했습니다.",
                     description=f"다음 정보를 개발자에게 알려주시면 문제해결에 도움이됩니다.\n**UUID**: ``{trace_uuid}``\n\n베타테스트 기간입니다, 발생 경위를 <#751768265088565279>에 보내주세요.",
                     colour=discord.Color.red(),
-                )
+                ),
+                mobile=is_mobile(ctx.author),
             )
 
             trace_embed = discord.Embed(
@@ -60,7 +63,7 @@ class Error(commands.Cog):
                 )
 
             channel = await self.bot.fetch_channel(os.environ["channel_id"])
-            await channel.send(embed=trace_embed)
+            await channel.send(embed=trace_embed, mobile=is_mobile(ctx.author))
 
 
 def setup(bot):

@@ -48,7 +48,7 @@ class Meal(commands.Cog):
             if not Data:
                 return await ctx.send(
                     embed=discord.Embed(
-                        title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
+                        title="학교명을 입력 해주세요.", colur=discord.Colour.red()
                     ),
                     mobile=is_mobile(ctx.author),
                 )

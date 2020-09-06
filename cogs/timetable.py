@@ -58,13 +58,13 @@ class TimeTable(commands.Cog):
             )
 
             if not (grade and class_):
-                return await ctx.send("인자 부족", mobile=is_mobile(ctx.author))
+                return await ctx.send("학년과 반을 입력해주세요", mobile=is_mobile(ctx.author))
         else:
             Data = await User.get_or_none(id=ctx.author.id)
             if not Data:
                 return await ctx.send(
                     embed=discord.Embed(
-                        title="학교명을 입력 해주시기 바랍니다.", colur=discord.Colour.red()
+                        title="학교명을 입력 해주세요.", colur=discord.Colour.red()
                     ),
                     mobile=is_mobile(ctx.author),
                 )
@@ -81,7 +81,7 @@ class TimeTable(commands.Cog):
                 class_ = Data.class_
 
         if SN == "his":
-            return await ctx.send("fucking his", mobile=is_mobile(ctx.author))
+            return await ctx.send("고등학교는 현재 지원하지 않습니다.", mobile=is_mobile(ctx.author))
 
         try:
             timetable = await self.Bot.neis.timeTable(
