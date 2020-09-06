@@ -47,9 +47,8 @@ class Schedule(commands.Cog):
             schedule = await self.Bot.neis.SchoolSchedule(AE, SE, AA_YMD=date)
         except neispy.DataNotFound:
             return await ctx.send(
-                embed=discord.Embed(
-                    title="정보가 없습니다. 확인하신 후 다시 요청하세요.", colur=discord.Colour.red()
-                ),
+                datetime.strptime(date, "%Y%m%d").strftime("%m월 %d일")
+                + "의 학사일정을 찾을 수 없습니다.",
                 mobile=is_mobile(ctx.author),
             )
         else:

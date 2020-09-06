@@ -19,22 +19,22 @@ class Error(commands.Cog):
             return
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(
-                "명령어 사용법이 잘못되었습니다. 값이 부족합니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
+                "⚠️ 명령에 누락된 항목이 있습니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
                 delete_after=5,
             )
 
         elif isinstance(error, commands.BadArgument):
             await ctx.send(
-                "명령어 사용법이 잘못되었습니다. 지정한 값이 잘못되었습니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
+                "⚠️ 잘못된 명령입니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
                 delete_after=5,
             )
         elif isinstance(error, commands.NotOwner):
-            await ctx.send("관리자만 사용가능한 명령어입니다.", delete_after=5)
+            await ctx.send("⚠️ 관리자만 사용가능한 명령어입니다.", delete_after=5)
         else:
             trace_uuid = str(uuid.uuid4())
             await ctx.send(
                 embed=discord.Embed(
-                    title="알 수 없는 오류가 발생했습니다.",
+                    title="⚠️ 알 수 없는 오류가 발생했습니다.",
                     description=f"다음 정보를 개발자에게 알려주시면 문제해결에 도움이됩니다.\n**UUID**: ``{trace_uuid}``\n\n베타테스트 기간입니다, 발생 경위를 <#751768265088565279>에 보내주세요.",
                     colour=discord.Color.red(),
                 ),
