@@ -3,6 +3,7 @@ from typing import Callable
 
 import discord
 import neispy
+
 from utils import is_mobile
 
 
