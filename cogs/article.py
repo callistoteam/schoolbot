@@ -15,7 +15,7 @@ class Article(commands.Cog):
         self.Bot = Bot
         self.client = iamschool.AsyncClient()
 
-    @commands.command(name="게시물", aliases=["게시물", "게시판"])
+    @commands.command(name="게시물", aliases=["게시판"])
     async def _article(self, ctx, schoolname: str = None):
         """
         설명:해당학교의 아이엠스쿨 게시물을 가져옵니다.
