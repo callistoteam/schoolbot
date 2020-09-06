@@ -5,7 +5,7 @@ import re
 def embed_to_text(embed):
     return (
         f"**{embed.title}**\n"
-        + ((embed.url + "\n") if embed.url != discord.Embed.Empty else "")
+        + (("<" + embed.url + ">\n") if embed.url != discord.Embed.Empty else "")
         + (
             (f"\n> " + embed.description)
             if embed.description != discord.Embed.Empty
@@ -21,8 +21,8 @@ def embed_to_text(embed):
                         + re.sub(
                             "\[(.*?)\]\((.*?)\)",
                             "\g<1>: \g<2>",
-                            field.value.replace("\n", "\n> "),
-                        )
+                            field.value,
+                        ).replace("\n", "\n> ")
                     )
                     if field.value
                     else ""
