@@ -1,6 +1,8 @@
 import logging
-import os
 
+import io
+import os
+import aiohttp
 import discord
 import neispy
 from discord.ext import commands
@@ -39,6 +41,8 @@ class Bot(commands.Bot):
                     content = ""
 
                 content += "\n" * 2 + utils.embed_to_text(kwargs["embed"])
+                if kwargs["embed"].image.url != discord.Embed.Empty:
+                    content += "\n" * 2 + kwargs["embed"].image.url
                 del kwargs["embed"]
 
             return await send_method(self, content, **kwargs)
@@ -56,6 +60,15 @@ class Bot(commands.Bot):
                     kwargs["content"] = ""
 
                 kwargs["content"] += "\n" * 2 + utils.embed_to_text(kwargs["embed"])
+                if kwargs["embed"].image.url != discord.Embed.Empty:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(kwargs["embed"].image.url) as resp:
+                            await self.channel.send(
+                                file=discord.File(
+                                    io.BytesIO(await resp.content.read()),
+                                    filename=f"image{os.path.splitext(kwargs['embed'].image.url)[1]}",
+                                )
+                            )
                 del kwargs["embed"]
 
             return await edit_method(self, **kwargs)
