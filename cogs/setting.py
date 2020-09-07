@@ -1,7 +1,9 @@
 import re
 
+import neispy
 import discord
 from discord.ext import commands
+from datetime import datetime
 
 from database import User
 from utils import is_mobile
@@ -69,6 +71,38 @@ class Setting(commands.Cog):
             Data.school_type = Value.group(3)
             Data.grade = int(Value.group(4))
             Data.class_ = int(Value.group(5))
+
+            if Data.school_type == "his":
+                try:
+                    Classes = await self.Bot.neis.classInfo(
+                        ATPT_OFCDC_SC_CODE=Data.neis_ae,
+                        SD_SCHUL_CODE=Data.neis_se,
+                        AY=datetime.now().year,
+                        GRADE=Data.grade,
+                    )
+                except neispy.DataNotFound:
+                    return await ctx.send("해당 학교의 정보를 찾을 수 없습니다. 잠시 후 다시시도해주세요.")
+
+                AflcoList = {Class.ORD_SC_NM for Class in Classes}
+
+                Data.aflco = await self.Bot.select_list(
+                    ctx, AflcoList, title="계열을 선택해주세요."
+                )
+                if not Data.aflco:
+                    return
+
+                MajorList = {
+                    Class.DDDEP_NM
+                    for Class in Classes
+                    if (Class.CLASS_NM.isdigit() and int(Class.CLASS_NM) == Data.class_)
+                    and Class.ORD_SC_NM == Data.aflco
+                }
+
+                Data.major = await self.Bot.select_list(
+                    ctx, MajorList, title="학과를 선택해주세요."
+                )
+                if not Data.major:
+                    return
 
             await Data.save()
 

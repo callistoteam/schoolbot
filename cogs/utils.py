@@ -63,19 +63,30 @@ class Utils:
             )
             return
 
-        if len(Data) == 1:
-            return Data[0]
-        Data = Data[:10]
-
         school_list = [
             f"{index}. {school.SCHUL_NM} ({school.LCTN_SC_NM})"
             for index, school in enumerate(Data, 1)
         ]
 
+        return await self.select_list(ctx, Data, school_list)
+
+    async def select_list(
+        self, ctx, Data: list, string_list: list = None, title: str = "여러개의 검색 결과입니다."
+    ):
+        if not string_list:
+            string_list = [f"{index}. {Value}" for index, Value in enumerate(Data, 1)]
+
+        if not isinstance(Data, list):
+            Data = list(Data)
+
+        if len(Data) == 1:
+            return Data[0]
+        Data = Data[:10]
+
         message = await ctx.send(
             embed=discord.Embed(
-                title="여러개의 검색 결과입니다.",
-                description="\n".join(school_list),
+                title=title,
+                description="\n".join(string_list),
                 colur=discord.Colour.blurple(),
             ),
             mobile=is_mobile(ctx.author),
@@ -97,9 +108,7 @@ class Utils:
             )
             return
 
-        await message.delete()
-
-        if not response.content.isdigit():
+        if not response.content.isdigit() or 1 > int(response.content) > len(Data):
             await message.edit(
                 embed=discord.Embed(
                     title="잘못된 값을 받았습니다. 확인 후 다시 시도 해주세요.",
@@ -109,6 +118,8 @@ class Utils:
             )
             return
 
+        await message.delete()
+
         return Data[int(response.content) - 1]
 
 
@@ -117,3 +128,4 @@ def setup(Bot):
 
     Bot.pagination = utils.pagination
     Bot.search_school = utils.search_school
+    Bot.select_list = utils.select_list
