@@ -18,6 +18,12 @@ class User(models.Model):
     )
     grade = fields.IntField(description="user school grade", null=True)
     class_ = fields.IntField(description="user school class", null=True)
+    aflco = fields.CharField(
+        max_length=3, description="user school aflco [highschool only]", null=True
+    )
+    major = fields.TextField(
+        description="user school major [highschool only]", null=True
+    )
 
     class Meta:
         table = "users"
