@@ -94,7 +94,7 @@ class Setting(commands.Cog):
                 MajorList = {
                     Class.DDDEP_NM
                     for Class in Classes
-                    if Class.CLASS_NM == str(Data.class_)
+                    if (Class.CLASS_NM.isdigit() and int(Class.CLASS_NM) == Data.class_)
                     and Class.ORD_SC_NM == Data.aflco
                 }
 

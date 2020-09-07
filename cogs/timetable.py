@@ -59,6 +59,12 @@ class TimeTable(commands.Cog):
 
             if not (grade and class_):
                 return await ctx.send("학년과 반을 입력해주세요", mobile=is_mobile(ctx.author))
+
+            if SN == "his":
+                return await ctx.send(
+                    "고등학교는 학교를 미리 설정해야 사용 가능합니다.", mobile=is_mobile(ctx.author)
+                )
+            AFLCO = MAJOR = None
         else:
             Data = await User.get_or_none(id=ctx.author.id)
             if not Data:
@@ -69,19 +75,18 @@ class TimeTable(commands.Cog):
                     mobile=is_mobile(ctx.author),
                 )
 
-            AE, SE, SN = (
+            AE, SE, SN, AFLCO, MAJOR = (
                 Data.neis_ae,
                 Data.neis_se,
                 Data.school_type,
+                Data.aflco,
+                Data.major,
             )
 
             if not grade:
                 grade = Data.grade
             if not class_:
                 class_ = Data.class_
-
-        if SN == "his":
-            return await ctx.send("고등학교는 현재 지원하지 않습니다.", mobile=is_mobile(ctx.author))
 
         try:
             timetable = await self.Bot.neis.timeTable(
@@ -92,7 +97,8 @@ class TimeTable(commands.Cog):
                 TI_FROM_YMD=date,
                 TI_TO_YMD=date,
                 GRADE=grade,
-                CLASS_NM=class_,
+                ORD_SC_NM=AFLCO,
+                DDDEP_NM=MAJOR,
             )
         except neispy.DataNotFound:
             return await ctx.send(
@@ -100,6 +106,8 @@ class TimeTable(commands.Cog):
                 + "의 시간표 정보를 찾을 수 없습니다.",
                 mobile=is_mobile(ctx.author),
             )
+
+        timetable = [time for time in timetable if int(time.CLASS_NM) == class_]
 
         await ctx.send(
             embed=discord.Embed(
