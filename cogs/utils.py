@@ -108,8 +108,6 @@ class Utils:
             )
             return
 
-        await message.delete()
-
         if not response.content.isdigit() or 1 > int(response.content) > len(Data):
             await message.edit(
                 embed=discord.Embed(
@@ -119,6 +117,8 @@ class Utils:
                 )
             )
             return
+
+        await message.delete()
 
         return Data[int(response.content) - 1]
 
