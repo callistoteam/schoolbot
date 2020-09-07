@@ -22,7 +22,9 @@ class TimeTable(commands.Cog):
         a: str = None,
         b: str = None,
         c: str = None,
-        d: str = neispy.now(),
+        d: str = None,
+        e: str = None,
+        f: str = neispy.now(),
     ):
         """
         설명:해당학교의 시간표를 알려줍니다. 날짜가 주어지지 않았을경우 현재 날짜로 가져옵니다. 현재 고등학교는 가져올수 없습니다.
@@ -32,14 +34,18 @@ class TimeTable(commands.Cog):
         ?시간표 구월중학교 2 1 20200810
         """
 
-        schoolname = grade = class_ = date = None
-        for Data in [Item for Item in [a, b, c, d] if Item]:
+        schoolname = grade = class_ = AFLCO = MAJOR = date = None
+        for Data in [Item for Item in [a, b, c, d, e, f] if Item]:
             if not schoolname and re.fullmatch("[가-힣]+", Data):
                 schoolname = Data
             elif not grade and re.fullmatch("[1-6]{1}", Data):
                 grade = Data
             elif not class_ and re.fullmatch("[0-9]{1,2}", Data):
                 class_ = Data
+            elif not AFLCO and re.fullmatch("[가-힣]+", Data):
+                AFLCO = Data
+            elif not MAJOR and re.fullmatch("[가-힣]+", Data):
+                MAJOR = Data
             elif not date and re.fullmatch(
                 "[0-9]{8}",
                 Data,
@@ -60,11 +66,8 @@ class TimeTable(commands.Cog):
             if not (grade and class_):
                 return await ctx.send("학년과 반을 입력해주세요", mobile=is_mobile(ctx.author))
 
-            if SN == "his":
-                return await ctx.send(
-                    "고등학교는 학교를 미리 설정해야 사용 가능합니다.", mobile=is_mobile(ctx.author)
-                )
-            AFLCO = MAJOR = None
+            if not (AFLCO and MAJOR):
+                return await ctx.send("계열과 학과를 입력해주세요", mobile=is_mobile(ctx.author))
         else:
             Data = await User.get_or_none(id=ctx.author.id)
             if not Data:
