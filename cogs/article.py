@@ -149,25 +149,23 @@ class Article(commands.Cog):
             )
 
         def callback(position):
-            embed = (
-                discord.Embed(
-                    title=articles[position].title,
-                    description=articles[position].content,
-                    timestamp=datetime.strptime(articles[position].date, "%Y.%m.%d"),
-                    url=articles[position].link,
-                    colour=0x2E3136,
-                )
-                .set_author(
+            embed = discord.Embed(
+                title=articles[position].title,
+                description=articles[position].content,
+                timestamp=datetime.strptime(articles[position].date, "%Y.%m.%d"),
+                url=articles[position].link,
+                colour=0x2E3136,
+            ).set_footer(
+                text=f"#{articles[position].group.name} • {articles[position].author}"
+            )
+            if articles[position].images:
+                embed.set_image(url=articles[position].images[0])
+            if user_data and user_data.public:
+                embed.set_author(
                     name=articles[position].organization_name,
                     url=f"https://school.iamservice.net/organization/{articles[position].organization_id}",
                     icon_url=articles[position].organization_logo,
                 )
-                .set_footer(
-                    text=f"#{articles[position].group.name} • {articles[position].author}"
-                )
-            )
-            if articles[position].images:
-                embed.set_image(url=articles[position].images[0])
 
             return embed
 
