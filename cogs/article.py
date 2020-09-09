@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 
+import neispy
 import discord
 import iamschool
 from discord.ext import commands
@@ -24,7 +25,37 @@ class Article(commands.Cog):
         ?게시물 인천기계공업고등학교
         """
 
-        if schoolname:
+        if not schoolname:
+            user_data = await User.get_or_none(id=ctx.author.id)
+            if not user_data:
+                return await ctx.send(
+                    embed=discord.Embed(
+                        title="학교명을 입력해주세요.", colur=discord.Colour.red()
+                    ),
+                    mobile=is_mobile(ctx.author),
+                )
+
+            if user_data.iamschool == "0":
+                try:
+                    School = await self.Bot.neis.schoolInfo(
+                        ATPT_OFCDC_SC_CODE=user_data.neis_ae,
+                        SD_SCHUL_CODE=user_data.neis_se,
+                    )
+                except neispy.DataNotFound:
+                    return await ctx.send(
+                        embed=discord.Embed(
+                            title="학교 정보가 없습니다. 확인 후 다시 시도해주세요.",
+                            colur=discord.Colour.red(),
+                        )
+                    )
+
+                schoolname, school_id = School[0].SCHUL_NM, None
+            else:
+                school_id = user_data.iamschool
+        else:
+            user_data = school_id = None
+
+        if not school_id:
             try:
                 Data = await self.client.search_school(schoolname)
             except HTTPException:
@@ -78,8 +109,6 @@ class Article(commands.Cog):
                         mobile=is_mobile(ctx.author),
                     )
 
-                await message.delete()
-
                 if not response.content.isdigit():
                     return await message.edit(
                         embed=discord.Embed(
@@ -90,18 +119,13 @@ class Article(commands.Cog):
                     )
 
                 Data = Data[int(response.content) - 1]
-            school_id = Data.id
-        else:
-            Data = await User.get_or_none(id=ctx.author.id)
-            if not Data:
-                return await ctx.send(
-                    embed=discord.Embed(
-                        title="학교명을 입력해주세요.", colur=discord.Colour.red()
-                    ),
-                    mobile=is_mobile(ctx.author),
-                )
 
-            school_id = Data.iamschool
+                await message.delete()
+
+            school_id = Data.id
+            if user_data:
+                user_data.iamschool = school_id
+                await user_data.save()
 
         try:
             articles = await self.client.fetch_recent_article(school_id)
