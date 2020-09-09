@@ -110,7 +110,7 @@ class TimeTable(commands.Cog):
                 mobile=is_mobile(ctx.author),
             )
 
-        timetable = [time for time in timetable if int(time.CLASS_NM) == class_]
+        timetable = [time for time in timetable if int(time.CLASS_NM) == int(class_)]
 
         await ctx.send(
             embed=discord.Embed(
