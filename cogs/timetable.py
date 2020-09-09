@@ -66,7 +66,7 @@ class TimeTable(commands.Cog):
             if not (grade and class_):
                 return await ctx.send("학년과 반을 입력해주세요", mobile=is_mobile(ctx.author))
 
-            if SN == 'his' and not (AFLCO and MAJOR):
+            if SN == "his" and not (AFLCO and MAJOR):
                 return await ctx.send("계열과 학과를 입력해주세요", mobile=is_mobile(ctx.author))
         else:
             Data = await User.get_or_none(id=ctx.author.id)
