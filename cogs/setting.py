@@ -71,6 +71,7 @@ class Setting(commands.Cog):
             Data.school_type = Value.group(3)
             Data.grade = int(Value.group(4))
             Data.class_ = int(Value.group(5))
+            Data.iamschool = "0"
 
             if Data.school_type == "his":
                 try:

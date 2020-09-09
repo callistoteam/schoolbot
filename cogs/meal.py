@@ -42,7 +42,7 @@ class Meal(commands.Cog):
             if not School:
                 return
 
-            AE, SE = School.ATPT_OFCDC_SC_CODE, School.SD_SCHUL_CODE
+            Data, AE, SE = None, School.ATPT_OFCDC_SC_CODE, School.SD_SCHUL_CODE
         else:
             Data = await User.get_or_none(id=ctx.author.id)
             if not Data:
@@ -67,7 +67,8 @@ class Meal(commands.Cog):
             meal = meal[0]
 
         embed = discord.Embed(
-            title=f"{meal.SCHUL_NM}의 급식입니다.", colour=0x2E3136
+            title=f"{meal.SCHUL_NM if Data and Data.public else '`학교 비공개`'}의 급식입니다.",
+            colour=0x2E3136,
         ).add_field(
             name=datetime.strptime(meal.MLSV_YMD, "%Y%m%d").strftime("%Y년 %m월 %d일"),
             value=meal.DDISH_NM.replace("<br/>", "\n"),
