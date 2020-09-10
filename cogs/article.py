@@ -160,7 +160,8 @@ class Article(commands.Cog):
             )
             if articles[position].images:
                 embed.set_image(url=articles[position].images[0])
-            if not user_data or (user_data and user_data.public):
+
+            if not user_data or user_data.public:
                 embed.set_author(
                     name=articles[position].organization_name,
                     url=f"https://school.iamservice.net/organization/{articles[position].organization_id}",
