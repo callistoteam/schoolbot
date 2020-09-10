@@ -56,7 +56,7 @@ class Schedule(commands.Cog):
 
         await ctx.send(
             embed=discord.Embed(
-                title=f"{schedule.SCHUL_NM if Data and Data.public else '`학교 비공개`'}의 학사일정입니다",
+                title=f"{schedule.SCHUL_NM if not Data or (Data and Data.public) else '`학교 비공개`'}의 학사일정입니다",
                 description=datetime.strptime(schedule.AA_YMD, "%Y%m%d").strftime(
                     "%Y년 %m월 %d일"
                 ),

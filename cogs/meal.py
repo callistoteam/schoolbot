@@ -67,7 +67,7 @@ class Meal(commands.Cog):
             meal = meal[0]
 
         embed = discord.Embed(
-            title=f"{meal.SCHUL_NM if Data and Data.public else '`학교 비공개`'}의 급식입니다.",
+            title=f"{meal.SCHUL_NM if not Data or (Data and Data.public) else '`학교 비공개`'}의 급식입니다.",
             colour=0x2E3136,
         ).add_field(
             name=datetime.strptime(meal.MLSV_YMD, "%Y%m%d").strftime("%Y년 %m월 %d일"),
