@@ -115,7 +115,9 @@ class TimeTable(commands.Cog):
 
         await ctx.send(
             embed=discord.Embed(
-                title=timetable[0].SCHUL_NM if not Data or not Data.public else "`학교 비공개`",
+                title=timetable[0].SCHUL_NM
+                if not Data or not Data.public
+                else "`학교 비공개`",
                 colour=0x2E3136,
             ).add_field(
                 name=datetime.strptime(timetable[0].ALL_TI_YMD, "%Y%m%d").strftime(

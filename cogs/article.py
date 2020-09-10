@@ -1,9 +1,9 @@
 import asyncio
 from datetime import datetime
 
-import neispy
 import discord
 import iamschool
+import neispy
 from discord.ext import commands
 from iamschool import HTTPException
 
