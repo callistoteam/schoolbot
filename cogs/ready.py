@@ -14,7 +14,7 @@ class Ready(commands.Cog):
         print(f"{len(set(self.bot.get_all_members()))}명이 봇을 사용하고 있습니다..")
         print("======================")
 
-        game = discord.Game(f"&도움말 | {self.bot.__version__}")
+        game = discord.Game(f"?도움말 | {self.bot.__version__}")
         await self.bot.change_presence(status=discord.Status.online, activity=game)
 
 
