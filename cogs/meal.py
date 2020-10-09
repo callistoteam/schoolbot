@@ -19,7 +19,7 @@ class Meal(commands.Cog):
     async def __get_meal_image(self, meals):
         regex = re.compile(r"(\d+)\.")
         meal_list = [
-            {"meal": f"{regex.sub('', info)}", "allergy": f"{regex.findall(info)}"}
+            {"meal": f"{regex.sub('', info)}", "allergy": f"{[int(i) for i in regex.findall(info)]}"}
             for info in meals.split("<br/>")
         ]
         async with aiohttp.ClientSession() as session:
