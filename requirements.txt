@@ -1,6 +1,6 @@
 discord.py==1.4.1
 neispy==3.2.2
 jishaku==1.19.2.202
-aiohttp==3.6.2
+aiohttp==3.6.3
 aiomysql==0.0.20
 tortoise-orm==0.16.16
