@@ -1,4 +1,4 @@
-discord.py==1.4.1
+discord.py==1.5.0
 neispy==3.2.2
 jishaku==1.19.2.202
 aiohttp==3.6.3
