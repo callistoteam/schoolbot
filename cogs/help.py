@@ -14,11 +14,11 @@ class Help(commands.Cog):
             title="도움말", description=f"접두사: ``{self.Bot.command_prefix}``"
         )
 
-        for Command in [i for i in self.Bot.commands if i.help if "jishaku" not in i.name]:
+        for Command in [
+            i for i in self.Bot.commands if i.help if "jishaku" not in i.name
+        ]:
             embed.add_field(
-                name=Command.name,
-                value=Command.help,
-                inline=False,
+                name=Command.name, value=Command.help, inline=False,
             )
         embed.add_field(
             name="유용한 링크",

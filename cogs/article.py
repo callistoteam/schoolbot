@@ -61,8 +61,7 @@ class Article(commands.Cog):
             except HTTPException:
                 return await ctx.send(
                     embed=discord.Embed(
-                        title="일시적인 오류입니다, 잠시 후 다시시도해주세요.",
-                        colour=discord.Colour.red(),
+                        title="일시적인 오류입니다, 잠시 후 다시시도해주세요.", colour=discord.Colour.red(),
                     ),
                     mobile=is_mobile(ctx.author),
                 )
@@ -132,8 +131,7 @@ class Article(commands.Cog):
         except HTTPException:
             return await ctx.send(
                 embed=discord.Embed(
-                    title="일시적인 오류입니다, 잠시 후 다시시도해주세요.",
-                    colour=discord.Colour.red(),
+                    title="일시적인 오류입니다, 잠시 후 다시시도해주세요.", colour=discord.Colour.red(),
                 ),
                 mobile=is_mobile(ctx.author),
             )
