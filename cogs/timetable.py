@@ -46,7 +46,10 @@ class TimeTable(commands.Cog):
                 AFLCO = Data
             elif not MAJOR and re.fullmatch("[가-힣]+", Data):
                 MAJOR = Data
-            elif not date and re.fullmatch("[0-9]{8}", Data,):
+            elif not date and re.fullmatch(
+                "[0-9]{8}",
+                Data,
+            ):
                 date = Data
 
         if schoolname:

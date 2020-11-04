@@ -25,7 +25,8 @@ class Error(commands.Cog):
 
         elif isinstance(error, commands.BadArgument):
             await ctx.send(
-                "⚠️ 잘못된 명령입니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.", delete_after=5,
+                "⚠️ 잘못된 명령입니다. `?도움말` 명령어를 통해 정확한 사용법을 보실 수 있습니다.",
+                delete_after=5,
             )
         elif isinstance(error, commands.NotOwner):
             await ctx.send("⚠️ 관리자만 사용가능한 명령어입니다.", delete_after=5)

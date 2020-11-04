@@ -20,7 +20,9 @@ def embed_to_text(embed):
                     (
                         "> "
                         + re.sub(
-                            r"\[(.*?)\]\((.*?)\)", r"\g<1>: \g<2>", field.value,
+                            r"\[(.*?)\]\((.*?)\)",
+                            r"\g<1>: \g<2>",
+                            field.value,
                         ).replace("\n", "\n> ")
                     )
                     if field.value
