@@ -115,7 +115,7 @@ class TimeTable(commands.Cog):
 
         await ctx.send(
             embed=discord.Embed(
-                title=f"{timetable[0].SCHUL_NM if not Data or Data.public else '`학교 비공개`'}의 급식입니다.",
+                title=f"{timetable[0].SCHUL_NM if not Data or Data.public else '`학교 비공개`'}의 시간표입니다.",
                 colour=0x2E3136,
             ).add_field(
                 name=datetime.strptime(timetable[0].ALL_TI_YMD, "%Y%m%d").strftime(
