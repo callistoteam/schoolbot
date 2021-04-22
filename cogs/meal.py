@@ -1,6 +1,7 @@
 import os
 import urllib.parse
 from datetime import datetime
+import re
 
 import aiohttp
 import discord
@@ -16,11 +17,19 @@ class Meal(commands.Cog):
         self.Bot = Bot
 
     async def __get_meal_image(self, meals):
+        regex = re.compile(r"(\d+)\.")
+        meal_list = [
+            {
+                "meal": str(regex.sub("", info)),
+                "allergy": [int(i) for i in regex.findall(info)],
+            }
+            for info in meals.split("<br/>")
+        ]
         async with aiohttp.ClientSession() as session:
-            meals = "&meal=".join([urllib.parse.quote(x) for x in meals.split("<br/>")])
             async with session.post(
-                f"https://api.schoolbot.callisto.team/render/?meal={meals}",
+                f"https://api.schoolbot.callisto.team/render",
                 headers={"Authorization": os.environ["MEAL_API_KEY"]},
+                json={"meal": meal_list},
             ) as res:
                 return (await res.json())["url"]
 
