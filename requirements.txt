@@ -3,4 +3,4 @@ neispy==3.2.2
 jishaku==1.20.0.220
 aiohttp==3.7.3
 aiomysql==0.0.21
-tortoise-orm==0.16.20
+tortoise-orm==0.17.5
